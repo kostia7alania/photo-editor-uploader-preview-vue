@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <title>Vue Hello World</title>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <!--Polyfill.io reads the User-Agent header of each request and returns polyfills that are suitable for the requesting browser-->
+    <link href="//unpkg.com/viewerjs/dist/viewer.css" rel="stylesheet" />
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/viewerjs/dist/viewer.js"></script>
+    <script src="//unpkg.com/v-viewer/dist/v-viewer.js"></script>
+    <script src="//unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- УЙТИ ОТ JQUERY!-->
+    <script></script>
+
+    <link
+      rel="stylesheet"
+      href="https://apcis.tmou.org/css/jquery.arcticmodal-0.3.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://apcis.tmou.org/css/redmond/jquery-ui-1.8.16.custom.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://apcis.tmou.org/css/jquery.arcticmodal-0.3.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://apcis.tmou.org/css/redmond/jquery-ui-1.8.16.custom.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    <script src="https://apcis.tmou.org/js/jquery-1.6.2.min.js"></script>
+    <script src="https://apcis.tmou.org/js/jquery.blockui.js"></script>
+    <script src="https://apcis.tmou.org/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script src="https://apcis.tmou.org/js/jquery.arcticmodal-0.3.min.js"></script>
+
+    <!--
+    <link type="text/css" rel="stylesheet" href="./js/photos_libs/styles_for_index.php.css"/>
+    -->
+  </head>
+
+  <body>
+    <!--
+    <div id="modal" title="Photo manager">
+      <div id="photos_modal_app">
+        <div id="app"></div>
+      </div>
+    </div>
+  -->
+
+    <table>
+      <tbody>
+        <tr>
+          <th>#</th>
+          <th>Code</th>
+          <th>Nature</th>
+          <th>Remarks</th>
+          <th>Conventions</th>
+          <th>Action(s) taken</th>
+          <th>Responsible RO</th>
+          <th>Pictures</th>
+        </tr>
+        <tr class="even">
+          <td rowspan="3">1</td>
+          <td rowspan="3">11129</td>
+          <td rowspan="3" style="text-align:left">
+            Operational readiness of lifesaving appliances
+          </td>
+          <td rowspan="3" style="text-align: left;">
+            Freefall life boat release system defective
+          </td>
+          <td rowspan="3" style="text-align: left;">
+            SOLAS ch. III, S74-24/CIII/R20
+          </td>
+          <td style="text-align:left">30 - Detainable deficiency</td>
+          <td rowspan="3"></td>
+          <td rowspan="3">
+            <div class="div_img_prev">
+              <a
+                class="redHover"
+                href="javascript:;"
+                def="FE21509A-1AB3-41B7-B97F-FBD3EEE820F9"
+                insp="347134C7-60E4-44E1-9A90-12071E799636"
+                onclick="showModal({readOnly: true, upload_mode: false})"
+                >Show <span class="badge bg-red">5</span></a
+              ><br /><a
+                class="redHover"
+                href="javascript:;"
+                def="FE21509A-1AB3-41B7-B97F-FBD3EEE820F9"
+                insp="347134C7-60E4-44E1-9A90-12071E799636"
+                onclick="showModal({readOnly: true, upload_mode: true})"
+                >Upload</a
+              >
+            </div>
+          </td>
+        </tr>
+        <tr class="even">
+          <td style="text-align:left"></td>
+        </tr>
+        <tr class="even">
+          <td style="text-align:left"></td>
+        </tr>
+        <tr class="odd">
+          <td rowspan="3">2</td>
+          <td rowspan="3">10114</td>
+          <td rowspan="3" style="text-align:left">
+            Voyage data recorder (VDR)/Simplified Voyage data recorder(S-VDR)
+          </td>
+          <td rowspan="3" style="text-align: left;">
+            Hydrostatic release unit expired at VDR float-free capsule since
+            December 2018
+          </td>
+          <td rowspan="3" style="text-align: left;">,</td>
+          <td style="text-align:left">
+            17 - Rectify deficiency before departure
+          </td>
+          <td rowspan="3"></td>
+          <td rowspan="3">
+            <div class="div_img_prev">
+              <a
+                class="redHover"
+                href="javascript:;"
+                def="19B37D3C-BF5F-40D7-ACC5-14FC9C9B7AF7"
+                insp="347134C7-60E4-44E1-9A90-12071E799636"
+                onclick="showModal({readOnly: true, upload_mode: false})"
+                >Show <span class="badge bg-green">1</span></a
+              ><br /><a
+                class="redHover"
+                href="javascript:;"
+                def="19B37D3C-BF5F-40D7-ACC5-14FC9C9B7AF7"
+                insp="347134C7-60E4-44E1-9A90-12071E799636"
+                onclick="showModal({readOnly: false, upload_mode: true})"
+                >Upload</a
+              >
+            </div>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align:left">10 - Deficiency rectified</td>
+        </tr>
+        <tr class="odd">
+          <td style="text-align:left"></td>
+        </tr>
+        <tr class="even">
+          <td rowspan="3">3</td>
+          <td rowspan="3">04110</td>
+          <td rowspan="3" style="text-align:left">Abandon ship drills</td>
+          <td rowspan="3" style="text-align: left;">
+            No record to document that freefall life boat has been manoeuvred in
+            water in past 3 months
+          </td>
+          <td rowspan="3" style="text-align: left;">,</td>
+          <td style="text-align:left">
+            16 - Rectify deficiency within 14 days
+          </td>
+          <td rowspan="3"></td>
+          <td rowspan="3">
+            <div class="div_img_prev">
+              <a
+                class="redHover"
+                href="javascript:;"
+                def="1594364B-C81E-4A85-8C54-B2CEB4F6D22C"
+                insp="FC9F9AD8-D24F-437F-9374-A01273AC95E6"
+                onclick="showModal({readOnly: true, upload_mode: false})"
+                >Show <span class="badge bg-blue">0</span></a
+              ><br />
+              <a
+                class="redHover"
+                href="javascript:;"
+                def="1594364B-C81E-4A85-8C54-B2CEB4F6D22C"
+                insp="FC9F9AD8-D24F-437F-9374-A01273AC95E6"
+                onclick="showModal({readOnly: false, upload_mode: true})"
+                >Upload</a
+              >
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script src="/dist/build.js"></script>
+  </body>
+</html>

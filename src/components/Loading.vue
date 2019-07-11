@@ -1,10 +1,17 @@
 <template>
-<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></template>
+  <div class="text-center">
+    <div class="lds-ellipsis">
+      <div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+</template>
 
-<style>
+
+<style scope>
 .lds-ellipsis {
   display: inline-block;
-  position: relative;
+  /*position: relative;*/
+  position: absolute;
   width: 64px;
   height: 64px;
 }

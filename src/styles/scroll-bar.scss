@@ -1,0 +1,53 @@
+#photos_modal,
+#photos_modal * {
+  /*  &::-webkit-scrollbar {
+    cursor: pointer;
+    width: 12px;
+  }
+*/
+  &::-webkit-scrollbar-thumb {
+    border-width: 1px 1px 1px 2px;
+    border-color: #777;
+    background-color: #326534ad;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    border-width: 1px 1px 1px 2px;
+    border-color: #555;
+    background-color: #192f1a;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-width: 0;
+  }
+  &::-webkit-scrollbar-track:hover {
+    border-left: solid 1px #aaa;
+    background-color: #6eafd1;
+  }
+
+  &::-webkit-scrollbar {
+    width: 24px;
+    background-color: #6ea6d1;
+  }
+
+  &::-webkit-scrollbar-button {
+    &:vertical {
+      height: 25px;
+      background-size: 21px 17px;
+      background-repeat: no-repeat;
+      background-position: center;
+      &:active {
+        height: 20px;
+      }
+      &:decrement {
+        /*TOP!!!*/
+        background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M11 2.206l-6.235 7.528-.765-.645 7.521-9 7.479 9-.764.646-6.236-7.53v21.884h-1v-21.883z'/%3E%3C/svg%3E");
+      }
+
+      &:increment {
+        /*BOTTOM!!!*/
+        background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M11 21.883l-6.235-7.527-.765.644 7.521 9 7.479-9-.764-.645-6.236 7.529v-21.884h-1v21.883z'/%3E%3C/svg%3E");
+      }
+    }
+  }
+}

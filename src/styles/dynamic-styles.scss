@@ -1,0 +1,82 @@
+.nav-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-btns > div {
+  width: 96px;
+}
+
+.wide-btn {
+  text-align: center;
+  width: 100%;
+  border-radius: 0;
+}
+
+.modal-buttons {
+  background-color: #4caf50;
+  border: none;
+  width: 88px;
+  color: white;
+  border-radius: 10px;
+  padding: 5px 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 0px 10px 0px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-buttons:hover {
+  background: #6fa7d1;
+  border: 2px solid #428bca;
+  padding: 3px 0;
+  transform: scale(1.1);
+}
+.modal-buttons:active {
+  transform: scale(0.9);
+}
+
+.v-viewer-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.v-viewer-modal-img {
+  display: flex;
+  align-items: center;
+}
+
+.v-viewer-modal-img img {
+  max-height: 111px;
+  width: 111px;
+  cursor: pointer;
+  margin: 0px 5px 5px 0;
+  background-size: contain;
+  /*background-image: url(https://cdn2.iconfinder.com/data/icons/picons-basic-3/57/basic3-010_creative_commons-256.png);*/
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='111' height='111'%3E%3Crect x='2' y='2' width='107' height='107' style='fill:%23DEDEDE;stroke:%23555555;stroke-width:2'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' alignment-baseline='middle' font-family='monospace, sans-serif' fill='%23555555'%3E111×111%3C/text%3E%3C/svg%3E");
+}
+
+.viewer-title,
+.viewer-title > div > *,
+.viewer-title > div > * > *,
+.v-viewer-modal-img * {
+  color: white !important;
+  font-size: 20px !important;
+  font-family: monospace !important;
+}
+
+.v-viewer-modal-custom > div {
+  padding: 5px;
+  border: 1px solid rgb(0, 103, 152);
+}
+
+.text-center {
+  text-align: center;
+}
+
+#photos_modal {
+  padding: 5px;
+  padding-right: 33px;
+}

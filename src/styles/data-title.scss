@@ -1,0 +1,52 @@
+[data-title] {
+  position: relative;
+  &[data-title-left]:hover::before {
+    left: -66px;
+    bottom: 0px;
+  }
+  &:hover::before {
+    content: attr(data-title);
+    position: absolute;
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 2px;
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    font-family: sans-serif;
+    white-space: nowrap;
+  }
+}
+/*
+[data-title] {
+  outline: red dotted 1px;*/ /*optional styling
+  font-size: 30px; */ /*optional styling
+  position: relative;
+   cursor: help;
+}
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  left: -8px;
+  bottom: -26px;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 2px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-family: sans-serif;
+  white-space: nowrap;
+}
+[data-title]:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 8px;
+  display: inline-block;
+  color: #fff;
+  border: 8px solid transparent;
+  border-bottom: 8px solid #000;
+}
+*/

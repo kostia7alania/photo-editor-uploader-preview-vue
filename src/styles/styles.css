@@ -1,0 +1,33 @@
+/*insections_data.xsl=>*/
+a.redHover {
+  text-decoration: none;
+}
+a.redHover:hover {
+  color: red;
+}
+.bg-red {
+  background: red;
+}
+.bg-blue {
+  background: #004673;
+}
+.bg-green {
+  background: green;
+}
+
+.bt-blue:hover,
+.bg-green:hover {
+  color: red;
+}
+
+.badge {
+  border-radius: 20px;
+  padding: 0px 5px;
+  margin-left: 3px;
+  font-size: 0.7rem;
+}
+
+.ui-dialog .ui-dialog-content {
+  overflow: overlay;
+}
+/*<=insections_data.xsl*/
