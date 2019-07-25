@@ -9,12 +9,12 @@
             :elems="elems"
           />
 
-
           <keep-alive v-if="upload_mode">
             <app-images-upload :def_uid="def_uid" :insp_uid="insp_uid"/>
           </keep-alive>
 
           <div v-else>
+              <h6 class="text-center">{{tooLongLoading===true?"Component loading too long ...":''}}</h6>
               <Loading v-if="loading"/>
               <error-Render v-else-if="error" :error="error" @get_info="get_info"/>
               <keep-alive v-else>
@@ -79,6 +79,7 @@ export default window.photos_modal_app = {
       readOnly: true,
       error: null,
       loading: true,
+      tooLongLoading: false,
       images: [],
       def_uid: null,
       insp_uid: null,
@@ -121,6 +122,7 @@ export default window.photos_modal_app = {
       this.elems = elems;
       this.upload_mode = upload_mode;
       this.readOnly = readOnly;
+      this.get_info();
     },
     get_info_global(props) {
       this.init_params(props);
@@ -131,6 +133,12 @@ export default window.photos_modal_app = {
       that.images = [];
       const url = `${config.base_url}?action=viewimage_kost&def_uid=${that.def_uid}&insp_uid=${that.insp_uid}`;
       that.loading = true;
+
+      window.clearTimeout(that.tooLongLoading);
+      that.tooLongLoading = setTimeout(
+        () => (that.tooLongLoading = true),
+        1000
+      );
       that.error = null;
       "axios" in window ||
         (await import(/* webpackChunkName: "http" */ "./http.js").then(
@@ -158,6 +166,8 @@ export default window.photos_modal_app = {
         .finally(() => {
           that.loading = false;
           that.modalPageTitleHandler();
+          window.clearTimeout(that.tooLongLoading);
+          that.tooLongLoading = false;
         });
     },
     modalPageTitleHandler() {
