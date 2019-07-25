@@ -15,16 +15,16 @@
         <div class="options">
 
           <slider label="Width"  v-model="width" :min="width_min" :max="width_max"/>
-         <!-- <slider label="Height" v-model="h" :min="min" :max="max"/>-->
+          <!-- <slider label="Height" v-model="h" :min="min" :max="max"/>-->
 
         </div>
         <div class="btns-row">
           <button class="btn save" @click="$emit('close')">Cancel</button>
-          <button class="btn save" :class="{'disabled': save_disabled }" @click="save">Save</button>
+          <button class="btn save" @click="save" :class="{'disabled': save_disabled }">Save</button>
         </div>
       </div>
 
-      <editorPrev v-if="cropped" :cropped="cropped" :w="width" :h="height"/>
+      <editorPrev :cropped="cropped" :w="width" :h="height" :originalImageData="originalImageData" :originalSize="upd.size" />
 
     </div>
   </section>
@@ -35,10 +35,9 @@
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 import sliderVue from "./slider/slider";
-import { setTimeout } from "timers";
 export default {
   name: "app-photo-editor",
-  props: ["editor"],
+  props: ["editor", "upd"],
   components: {
     slider: sliderVue,
     editorPrev: () => import("./photo-editor-preview")
@@ -52,12 +51,15 @@ export default {
       width_max: 1200,
       cropper_instance: null,
       detail: {},
-      refresh_timeout: null
+      refresh_timeout: null,
+      imageSmoothingQuality: ["low", "medium", "high"],
+      imageSmoothingQuality_active: 0,
+      originalImageData: {}
     };
   },
   computed: {
     save_disabled() {
-      return !this.cropped;
+      return !this.cropped || this.cropped.length < 10;
     }
   },
   watch: {
@@ -81,21 +83,23 @@ export default {
       crop: event => {
         window.e = event;
         this.$set(this, "detail", event.detail);
-        console.log(event.detail.x);
-        console.log(event.detail.y);
+        console.log("x ", event.detail.x);
+        console.log("y ", event.detail.y);
         const w = event.detail.width;
-        console.log(event.detail.width);
-        console.log(event.detail.height);
-        console.log(event.detail.rotate);
-        console.log(event.detail.scaleX);
-        console.log(event.detail.scaleY);
+        console.log("width ", event.detail.width);
+        console.log("height ", event.detail.height);
+        console.log("rotate ", event.detail.rotate);
+        console.log("scaleX ", event.detail.scaleX);
+        console.log("scaleY ", event.detail.scaleY);
+        this.preview();
         if (this.width == w) return;
         if (this.width_min > w) return;
         if (this.width > w) return;
         //if( this.width_min > w) return this.width = w;
 
         this.width_max = w;
-        this.preview();
+
+        this.originalImageData = this.cropper_instance.getImageData();
       }
     });
   },
@@ -105,16 +109,24 @@ export default {
       clearTimeout(this.refresh_timeout);
       this.refresh_timeout = setTimeout(() => {
         this.cropped = this.cropper_instance
-          .getCroppedCanvas({ width: this.width })
+          .getCroppedCanvas({
+            minWidth: 10,
+            minHeight: 10,
+            maxWidth: 1500,
+            maxHeight: 1500,
+            width: this.width,
+            imageSmoothingQuality: "high"
+          })
           .toDataURL("image/jpeg");
         console.log("preview _timeout");
         this.refresh_timeout = null;
-      }, 300);
+      }, 150);
       console.log("preview add to timeout shedule");
     },
     save() {
       if (this.save_disabled) return console.log("BTN IS BLOCKED");
       console.log("save=>", this.cropped);
+      this.$emit("close", this.cropped);
     }
   }
 };
@@ -131,7 +143,7 @@ h1 {
   max-width: 768px;
   display: flex;
   align-items: flex-start;
-  height: 100%;
+  height: auto;
 
   .box {
     padding: 0.5em;
@@ -140,7 +152,7 @@ h1 {
   }
 
   .box-2 {
-    padding: 0.5em;
+    padding: 1px;
     width: calc(100% / 2 - 1em);
   }
 

@@ -4,14 +4,18 @@
         <div class="m_p-5 text-left upload-left-side">
           <p><b>Name:</b> {{upd.name}}</p>
           <p><b>Type:</b> {{upd.type}}</p>
-          <p><b>Modified Date:</b> {{upd.lastModifiedDate}}</p>
-          <p><b>Size:</b>         {{upd.size | size_filter}}</p>
+          <p><b>Date:</b> {{upd.lastModifiedDate}}</p>
+          <p v-if="!upd.base64"><b>Size:</b>  {{upd.size | size_filter}}</p>
+          <p v-else ><b>New size:</b>         {{getSizeFromBase64 | size_filter}}</p>
           <p><b>Your comments:</b></p>
           <vue-textarea :readonly="isBlockedTextArea" :obj="upd" obj_key='comment'/>
         </div>
         <div class="upload-right-side">
 
-          <img-prev :src="upd.url" :alt="img_prev_alt"/>
+          <img-prev
+            :src="upd.base64 || upd.url"
+            :alt="img_prev_alt"
+          />
 
           <div class="panel-btns">
 
@@ -19,7 +23,6 @@
                 :class="{'blocked-btn': isBlockedUpload}"
                 class="modal-buttons"
                 @click="upload" type="button">
-
                 Upload</button>
 
               <button
@@ -33,9 +36,19 @@
                 @click="$emit('delete')" type="button">Delete</button>
 
                 <button
-                :class="{'blocked-btn': isBlockedEdit}"
+                :class="{'blocked-btn': isBlockedEdit, 'editor-open-btn':editor}"
                 class="modal-buttons"
-                @click="edit" type="button">Edit</button>
+                @click="edit" type="button">
+                  Editor
+                  {{editor?"-":'+'}}
+                </button>
+
+                <button
+                :class="{'blocked-btn': isBlockedRevert}"
+                class="modal-buttons"
+                @click="revert" type="button">
+                  Revert
+                </button>
 
 
             </div>
@@ -44,15 +57,35 @@
 
         </div>
     </div>
-
+  <div>
     <progressVue :percentage="percentage" />
     <p class="text-red" v-if="ERROR_maxSize"><b>ERROR:</b> Exceeded the maximum file size of {{maxFileSize}} MB</p>
     <p class="text-red" v-if="errorMsg"><b>ERROR:</b> {{errorMsg}} </p>
+  </div>
+
+  <app-photo-editor v-if="editor" :alt="img_prev_alt" :editor="editor" :upd="upd" @close="closeEditor"/>
+
   </div>
 </template>
 
 <script>
 import config from "../../../config";
+
+const appPhotoEditor = () => ({
+  component: import(
+    /* webpackChunkName: "app-photo-editor"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "../photo-editor/app-photo-editor.vue"
+  ),
+  loading: {
+    template: `<h1 style="color:red">!!!!!!!!! LOADING !!!!!!!!!</h1>`
+  },
+  error: { template: `<div>. . . ERROR...</div>` },
+  delay: 20,
+  timeout: 25000
+});
 
 export default {
   name: "upload-item",
@@ -61,10 +94,12 @@ export default {
     errorRender: () => import("../error-render.vue"),
     imgPrev: () => import("./img-prev.vue"),
     progressVue: () => import("./progress.vue"),
-    vueTextarea: () => import("../elements/vue-textarea.vue")
+    vueTextarea: () => import("../elements/vue-textarea.vue"),
+    appPhotoEditor
   },
   data() {
     return {
+      editor: null,
       loading: false,
       source: null,
       errorMsg: null,
@@ -73,6 +108,12 @@ export default {
   },
 
   computed: {
+    getSizeFromBase64() {
+      const img = this.upd.base64;
+      if (!img) return "";
+      const len = img.length - img.split(",")[0].length;
+      return 4 * Math.ceil(len / 3) * 0.5624896334383812;
+    },
     url() {
       return config.base_url;
     },
@@ -85,28 +126,49 @@ export default {
     isBlockedTextArea() {
       return this.loading || this.ERROR_maxSize;
     },
-    isBlockedDelete() {
-      return this.loading;
-    },
     isBlockedUpload() {
-      return this.loading || this.ERROR_maxSize;
+      return this.loading || this.ERROR_maxSize || this.editor;
     },
     isBlockedCancel() {
       return !this.source;
     },
+    isBlockedDelete() {
+      return this.loading;
+    },
     isBlockedEdit() {
-      return this.isBlockedDelete || this.isBlockedUpload;
+      return this.isBlockedDelete || this.ERROR_maxSize;
+    },
+    isBlockedRevert() {
+      return !this.upd.base64;
     },
     img_prev_alt() {
       const comment = this.upd.comment
         ? `. Comment: "${this.upd.comment}"`
         : "";
-      return this.upd.name + comment;
+      const changed = this.upd.base64 ? " [CHANGED]" : "";
+      return this.upd.name + comment + changed;
     }
   },
+  mounted() {
+    window.e = this;
+    //EventBus.$on("editor_mode", (state = false) => (this.editor = state));
+  },
   methods: {
+    revert() {
+      this.$delete(this.upd, "base64");
+    },
+    closeEditor(base64) {
+      console.log("closeEditor");
+      this.editor = null;
+      if (base64) {
+        // save?
+        this.$set(this.upd, "base64", base64);
+      }
+    },
     edit() {
-      EventBus.$emit("editor_mode", this.upd.url);
+      if (!this.editor) this.editor = this.upd.url;
+      else this.editor = null;
+      //EventBus.$emit("editor_mode", this.upd.url);
     },
     onUploadProgress(e) {
       this.percentage = Math.round((e.loaded * 100.0) / e.total || 100);
@@ -187,14 +249,16 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
+.editor-open-btn {
+  color: red;
+}
 .text-left {
   text-align: left;
 }
 .files-container {
   padding: 5px;
-  border: 1px solid #006798;
-  border-radius: 6px;
+  border-top: 5px dashed #006798;
 }
 .files-row {
   display: flex;

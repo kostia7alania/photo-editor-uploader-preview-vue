@@ -10,7 +10,7 @@
         </span>
         <template v-if="showTip">
           <p><b>You can choose and upload multiple images at once.</b></p>
-          <p><b>Allowed file types</b>: gif, png, jpg, jfif, etc.</p>
+          <p><b>Recommended file types</b>: jpeg (jpg), png, gif.</p>
           <p>
             <b>Max recommended file size</b>: 5 mb.
             <b>Resolution</b>: within 4k.</p>

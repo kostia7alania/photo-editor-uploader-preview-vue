@@ -1,9 +1,8 @@
 <template>
   <div class="modal-picture-uploader text-center" v-viewer="{ url: 'data-original' }">
 
-      <app-photo-editor v-if="editor" :editor="editor" @close="closeEditor"/>
 
-      <div v-else>
+      <div>
         <drag-drop @fileListHandler="fileListHandler"/>
 
         <upload-tips/>
@@ -19,8 +18,8 @@
                 :def_uid="def_uid"
                 @delete="delete_handler(i)"
                 @finished="finished_handler(i)"
-                :key="upd.url"/>
-
+                :key="upd.url"
+                />
           </transition-group>
     </div>
 
@@ -28,20 +27,6 @@
 </template>
 
 <script>
-const appPhotoEditor = () => ({
-  component: import(
-    /* webpackChunkName: "app-photo-editor"*/
-    /* webpackMode: "lazy" */
-    /* webpackPrefetch: true */
-    /* webpackPreload: true */
-    "../photo-editor/app-photo-editor.vue"
-  ),
-  loading,
-  error,
-  delay: 20,
-  timeout: 25000
-});
-
 const loading = {
   template: `<h1 style="color:red">!!!!!!!!! LOADING !!!!!!!!!</h1>`
 };
@@ -84,23 +69,14 @@ export default {
     uploadItem,
     chooseButton,
     dragDrop,
-    uploadTips,
-    appPhotoEditor
+    uploadTips
   },
   data() {
     return {
-      editor: null,
       uploading_list: []
     };
   },
-  mounted() {
-    EventBus.$on("editor_mode", (state = false) => (this.editor = state));
-  },
   methods: {
-    closeEditor() {
-      console.log("closeEditor");
-      this.editor = null;
-    },
     delete_handler(i) {
       this.uploading_list.splice(i, 1);
       //this.uploading_list = Object.assign({}, this.uploading_list); //this.uploading_list.push(e);

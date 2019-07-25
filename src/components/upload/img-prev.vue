@@ -1,18 +1,34 @@
 <template>
-  <div class="img-frame" ref="viewer">
+  <div class="img-frame">
     <img
+      ref="viewer"
       :alt="alt || 'Image preview'"
       :src="src"
       :data-original="src"
-      @click="click_handler"
+      @click.stop="prev_separate"
     />
   </div>
 </template>
 <script>
 export default {
-  props: ["src", "alt"],
+  props: { src: {}, alt: {} },
+  data() {
+    return {
+      viewer_instance: null
+    };
+  },
   methods: {
-    click_handler() {}
+    prev_separate(e) {
+      //EventBus.$emit("prev_gallery", this.i);//i don't know HOT TO OPEN GALLERY +ignore editor pictures:-( let show always separate pictures!
+      this.viewer_destroy();
+      this.viewer_instance = new Viewer(this.$refs.viewer).show();
+    },
+    viewer_destroy() {
+      this.viewer_instance && this.viewer_instance.destroy();
+    }
+  },
+  beforeDestroy() {
+    this.viewer_destroy();
   }
 };
 </script>
