@@ -1,65 +1,80 @@
 <template>
-      <div v-if="init" class="application">
-          <navBtnsVue
+      <div class="application">
+          <nav-Btns
             @upload_mode_toggle="upload_mode_toggle"
-            :prevShow="prevShow"
-            :nextShow="nextShow"
+            @change_def="def_uid = $event"
             :upload_mode="upload_mode"
-            @nextHandler="nextHandler"
-            @prevHandler="prevHandler"
+            :def_uid="def_uid"
+            :index="index"
+            :elems="elems"
           />
-          <app-images-upload v-if="upload_mode" :def_uid="def_uid" :insp_uid="insp_uid"/>
+
+
+          <keep-alive v-if="upload_mode">
+            <app-images-upload :def_uid="def_uid" :insp_uid="insp_uid"/>
+          </keep-alive>
+
           <div v-else>
-              <LoadingVue v-if="loading"/>
-              <error-render v-else-if="error" :error="error" @get_info="get_info"/>
-              <div v-else>
-                  <!--<appImagesRowsVue
-                    v-for="elem in elems"
-                    :key="elem.def + elem.insp"
-                    :elem="elem"
-                    :images="images"
-                    :index="index"
-                  />-->
-                  <appImagesRowsVue
-                    :elem="elems[index]"
-                    :images="images"
-                    :index="index"
-                  />
-              </div>
-              <!--
-              <div style="position: absolute;text-align: center; bottom: 0px; left:0px; right:0px" class="poll-down">
+              <Loading v-if="loading"/>
+              <error-Render v-else-if="error" :error="error" @get_info="get_info"/>
+              <keep-alive v-else>
+                <app-Images-Rows :elem="elems[index]" :images="images" :index="index"/>
+              </keep-alive>
 
-                    <button style="text-align:center; width:100%;  border-radius:0;"
-                     type="button" @click="upload_mode = !upload_mode" class="modal-buttons">{{upload_mode?"Show":"Upload"}} pictures</button>
-              </div>
-              -->
           </div>
-
-
-
       </div>
 </template>
 
 <script>
-import appImagesRowsVue from "./components/show/app-images-rows.vue";
-import appImagesUploadVue from "./components/upload/app-images-upload.vue";
-import LoadingVue from "./components/Loading.vue";
+import Loading from "./components/Loading.vue";
+import navBtns from "./components/nav-btns.vue";
+import errorRender from "./components/error-render.vue";
+
+const loading = {
+  template: `<h1 style="text-align:center">!!!!!!!!! LOADING !!!!!!!!!</h1>`
+};
+const error = { template: `<div>. . . ERROR...</div>` };
+
+const appImagesUpload = () => ({
+  component: import(
+    /* webpackChunkName: "app-images-upload"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./components/upload/app-images-upload.vue"
+  ),
+  loading,
+  error,
+  delay: 20,
+  timeout: 25000
+});
+const appImagesRows = () => ({
+  component: import(
+    /* webpackChunkName: "app-images-rows"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./components/show/app-images-rows.vue"
+  ),
+  loading,
+  error,
+  delay: 20,
+  timeout: 25000
+});
+
 import config from "../config";
-import navBtnsVue from "./components/nav-btns.vue";
-import errorRenderVue from "./components/error-render.vue";
 
 export default window.photos_modal_app = {
   name: "photos_modal_app",
   components: {
-    "app-images-upload": appImagesUploadVue,
-    LoadingVue,
-    appImagesRowsVue,
-    navBtnsVue,
-    "error-render": errorRenderVue
+    appImagesUpload,
+    appImagesRows,
+    Loading,
+    errorRender,
+    navBtns
   },
   data() {
     return {
-      init: 0,
       upload_mode: false, // true - upload_mode || false -  show_mode
       readOnly: true,
       error: null,
@@ -72,7 +87,7 @@ export default window.photos_modal_app = {
   },
   mounted() {
     EventBus.that = this;
-    console.log("MAIN  mounted .!.");
+    //console.log("MAIN  mounted .!.");
     EventBus.$on("get_info_global", this.get_info_global.bind(this));
     EventBus.$on("modal_closed", () => {
       window.VUE_PICTURE.$destroy();
@@ -80,29 +95,12 @@ export default window.photos_modal_app = {
     });
     window.addEventListener("keydown", this.keyHandler);
   },
-  beforeDestroy() {
-    this.destroyMe();
-  },
   watch: {
     upload_mode(neww, old) {
       !this.upload_mode && this.get_info();
     }
   },
   computed: {
-    nextShow() {
-      let index = 0;
-      this.elems.forEach((e, i) => {
-        if (e.def == this.def_uid) index = i;
-      });
-      return this.elems.length - 1 > index ? true : false;
-    },
-    prevShow() {
-      let index = 0;
-      this.elems.forEach((e, i) => {
-        if (e.def == this.def_uid) index = i;
-      });
-      return index > 0;
-    },
     index() {
       let index;
       this.elems.some(
@@ -113,40 +111,10 @@ export default window.photos_modal_app = {
     }
   },
   methods: {
-    destroyMe() {
-      $("#photos_modal").remove();
-      EventBus.$off("get_info_global");
-      EventBus.$off("modal_closed");
-      window.removeEventListener("keydown", this.keyHandler);
-    },
-    keyHandler(e) {
-      if (this.upload_mode) return;
-      e = e || window.event;
-      if (e.keyCode == "38") {
-      } else if (e.keyCode == "40") {
-      } else if (/*e.keyCode == "39"*/ e.key === "ArrowRight") {
-        this.nextHandler();
-      } else if (/*e.keyCode == "37"*/ e.key === "ArrowLeft") {
-        this.prevHandler();
-      } else if (e.key === "Escape") {
-        this.destroyMe();
-      }
-    },
     upload_mode_toggle() {
       this.upload_mode = !this.upload_mode;
     },
-    nextHandler() {
-      if (this.nextShow && typeof this.index != "undefined") return;
-      this.def_uid = this.elems[this.index + 1]["def"];
-      this.get_info();
-    },
 
-    prevHandler() {
-      if (this.prevShow && typeof this.index != "undefined") return;
-      this.def_uid = this.elems[this.index - 1]["def"];
-      debugger;
-      this.get_info();
-    },
     init_params({ def_uid, insp_uid, elems, upload_mode, readOnly }) {
       this.def_uid = def_uid;
       this.insp_uid = insp_uid;
@@ -155,9 +123,8 @@ export default window.photos_modal_app = {
       this.readOnly = readOnly;
     },
     get_info_global(props) {
-      this.init = 1;
       this.init_params(props);
-      !props.upload_mode && this.get_info();
+      // !props.upload_mode && this.get_info();
     },
     async get_info() {
       const that = EventBus.that;
@@ -181,6 +148,7 @@ export default window.photos_modal_app = {
             console.log(result.File["@attributes"]);
             return;
           }
+          throw "server wrong answer";
           console.warn("server wrong answer");
         })
         .catch(err => {

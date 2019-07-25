@@ -1,16 +1,19 @@
 <template>
-  <div class="img-frame"  ref="viewer">
+  <div class="img-frame" ref="viewer">
     <img
       :alt="alt || 'Image preview'"
       :src="src"
       :data-original="src"
+      @click="click_handler"
     />
   </div>
 </template>
 <script>
 export default {
   props: ["src", "alt"],
-  methods: {}
+  methods: {
+    click_handler() {}
+  }
 };
 </script>
 

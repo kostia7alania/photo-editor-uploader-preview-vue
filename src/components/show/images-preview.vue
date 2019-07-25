@@ -15,11 +15,10 @@
     </div>
 </template>
 <script>
-import appImagesPreviewOpenVue from "./app-images-preview-open.vue";
 export default {
-  name: "app-images-preview",
+  name: "images-preview",
   components: {
-    "images-preview-open": appImagesPreviewOpenVue
+    imagesPreviewOpen: () => import("./images-preview-open.vue")
   },
   props: ["images"],
   data() {
@@ -36,8 +35,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-viewer-modal-row {
   display: flex;
+}
+.v-viewer-modal-desc {
+  word-break: break-word;
 }
 </style>

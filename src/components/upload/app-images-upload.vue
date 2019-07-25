@@ -1,50 +1,106 @@
 <template>
   <div class="modal-picture-uploader text-center" v-viewer="{ url: 'data-original' }">
 
-    <drag-drop @fileListHandler="fileListHandler"/>
+      <app-photo-editor v-if="editor" :editor="editor" @close="closeEditor"/>
 
-    <upload-tips/>
+      <div v-else>
+        <drag-drop @fileListHandler="fileListHandler"/>
 
-    <choose-button @fileListHandler="fileListHandler"/>
+        <upload-tips/>
 
+        <choose-button @fileListHandler="fileListHandler"/>
 
+          <transition-group name="slide" tag="div">
 
-      <transition-group name="slide" tag="div">
+            <upload-item
+                v-for="(upd,i) in uploading_list"
+                :upd="upd"
+                :insp_uid="insp_uid"
+                :def_uid="def_uid"
+                @delete="delete_handler(i)"
+                @finished="finished_handler(i)"
+                :key="upd.url"/>
 
-        <upload-item
-            v-for="(upd,i) in uploading_list"
-            :upd="upd"
-            :insp_uid="insp_uid"
-            :def_uid="def_uid"
-            @delete="delete_handler(i)"
-            @finished="finished_handler(i)"
-            :key="i"/>
-      </transition-group>
+          </transition-group>
+    </div>
 
   </div>
 </template>
 
 <script>
-import uploadItemVue from "./upload-item.vue";
-import chooseButtonVue from "./choose-button.vue";
-import dragDropVue from "./drag-drop.vue";
-import uploadTipsVue from "./upload-tips.vue";
+const appPhotoEditor = () => ({
+  component: import(
+    /* webpackChunkName: "app-photo-editor"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "../photo-editor/app-photo-editor.vue"
+  ),
+  loading,
+  error,
+  delay: 20,
+  timeout: 25000
+});
+
+const loading = {
+  template: `<h1 style="color:red">!!!!!!!!! LOADING !!!!!!!!!</h1>`
+};
+const error = { template: `<div>. . . ERROR...</div>` };
+const con = { loading, error, delay: 20, timeout: 25000 };
+
+const uploadTips = () => ({
+  component: import(/* webpackChunkName: "upload-tips" */ "./upload-tips.vue"),
+  ...con
+});
+const uploadItem = () => ({
+  component: import(
+    /* webpackChunkName: "upload-item" */
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./upload-item.vue"
+  )
+});
+const chooseButton = () => ({
+  component: import(
+    /* webpackChunkName: "choose-button" */
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./choose-button.vue"
+  )
+});
+const dragDrop = () => ({
+  component: import(
+    /* webpackChunkName: "drag-drop" */
+    "./drag-drop.vue"
+  )
+});
 
 export default {
   name: "app-images-upload",
   props: ["insp_uid", "def_uid"],
   components: {
-    "upload-item": uploadItemVue,
-    "choose-button": chooseButtonVue,
-    "drag-drop": dragDropVue,
-    "upload-tips": uploadTipsVue
+    uploadItem,
+    chooseButton,
+    dragDrop,
+    uploadTips,
+    appPhotoEditor
   },
   data() {
     return {
+      editor: null,
       uploading_list: []
     };
   },
+  mounted() {
+    EventBus.$on("editor_mode", (state = false) => (this.editor = state));
+  },
   methods: {
+    closeEditor() {
+      console.log("closeEditor");
+      this.editor = null;
+    },
     delete_handler(i) {
       this.uploading_list.splice(i, 1);
       //this.uploading_list = Object.assign({}, this.uploading_list); //this.uploading_list.push(e);

@@ -17,11 +17,10 @@
 </template>
 
 <script>
-import appImagesPreviewVue from "./app-images-preview.vue";
 export default {
   props: ["elem", "index", "images"],
   components: {
-    "app-images-preview": appImagesPreviewVue
+    appImagesPreview: () => import("./images-preview.vue")
   },
   mounted() {}
 };

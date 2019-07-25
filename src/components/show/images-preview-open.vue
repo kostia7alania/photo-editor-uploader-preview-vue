@@ -21,7 +21,7 @@
 import config from "../../../config";
 
 export default {
-  name: "app-images-preview-open",
+  name: "images-preview-open",
   props: ["img"],
   computed: {
     url() {
@@ -48,8 +48,8 @@ export default {
         this.comments ? " - " + this.comments : ""
       }
       `;
-    },
-    imgAltCompHTML() {
+    }
+    /* imgAltCompHTML() {
       return `<div class="v-viewer-modal-img">
                   <p><b>Date: </b> ${new Date(this.img.Date).toLocaleString(
                     "Ru-ru"
@@ -60,7 +60,7 @@ export default {
                       : ""
                   }
                 </div>`;
-    }
+    }*/
   }
 };
 </script>

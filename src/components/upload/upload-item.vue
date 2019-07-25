@@ -10,22 +10,34 @@
           <vue-textarea :readonly="isBlockedTextArea" :obj="upd" obj_key='comment'/>
         </div>
         <div class="upload-right-side">
+
           <img-prev :src="upd.url" :alt="img_prev_alt"/>
+
           <div class="panel-btns">
-              <button
-                :class="{'blocked-btn': isBlockedDelete}"
-                class="modal-buttons"
-                @click="$emit('delete')" type="button">Delete</button>
+
               <button
                 :class="{'blocked-btn': isBlockedUpload}"
                 class="modal-buttons"
                 @click="upload" type="button">
 
                 Upload</button>
+
               <button
                 :class="{'blocked-btn': isBlockedCancel}"
                 class="modal-buttons"
                 @click="cancelUploading" type="button">Cancel</button>
+
+              <button
+                :class="{'blocked-btn': isBlockedDelete}"
+                class="modal-buttons"
+                @click="$emit('delete')" type="button">Delete</button>
+
+                <button
+                :class="{'blocked-btn': isBlockedEdit}"
+                class="modal-buttons"
+                @click="edit" type="button">Edit</button>
+
+
             </div>
 
           <error-render v-if="upd.error" :error="upd.error || error" :upload_mode="true"/>
@@ -41,18 +53,15 @@
 
 <script>
 import config from "../../../config";
-import errorRenderVue from "../error-render.vue";
-import imgPrevVue from "./img-prev.vue";
-import progressVue from "./progress.vue";
-import vueTextareaVue from "../elements/vue-textarea.vue";
+
 export default {
   name: "upload-item",
   props: ["upd", "insp_uid", "def_uid"],
   components: {
-    "error-render": errorRenderVue,
-    "img-prev": imgPrevVue,
-    progressVue,
-    "vue-textarea": vueTextareaVue
+    errorRender: () => import("../error-render.vue"),
+    imgPrev: () => import("./img-prev.vue"),
+    progressVue: () => import("./progress.vue"),
+    vueTextarea: () => import("../elements/vue-textarea.vue")
   },
   data() {
     return {
@@ -85,6 +94,9 @@ export default {
     isBlockedCancel() {
       return !this.source;
     },
+    isBlockedEdit() {
+      return this.isBlockedDelete || this.isBlockedUpload;
+    },
     img_prev_alt() {
       const comment = this.upd.comment
         ? `. Comment: "${this.upd.comment}"`
@@ -93,9 +105,11 @@ export default {
     }
   },
   methods: {
+    edit() {
+      EventBus.$emit("editor_mode", this.upd.url);
+    },
     onUploadProgress(e) {
       this.percentage = Math.round((e.loaded * 100.0) / e.total || 100);
-      console.log("progressEvent=>", this.percentage);
     },
     cancelUploading() {
       this.source.cancel("Operation canceled by the user");
@@ -118,7 +132,7 @@ export default {
 
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
-      const config = {
+      const axios_config = {
         onUploadProgress: this.onUploadProgress,
         cancelToken: source.token,
         headers: { "content-type": "multipart/form-data" }
@@ -126,7 +140,7 @@ export default {
       const url = this.url + "?action=savepic_kost";
       this.source = source;
       axios
-        .post(url, formData, config)
+        .post(url, formData, axios_config)
         .then(res => {
           if (typeof res.data !== "object" || !("errors" in res.data))
             throw { message: "no data.!." };
@@ -163,7 +177,7 @@ export default {
   filters: {
     size_filter(e) {
       window.size = e;
-      console.log("size", e);
+      //console.log("size", e);
       return e / 1024 / 1024 > 1
         ? (e / 1024 / 1024).toFixed(0) + " MB"
         : (e / 1024).toFixed(0) + " KB";
@@ -208,12 +222,12 @@ export default {
 }
 .upload-right-side {
   display: flex;
-  flex-direction: column;
   align-content: space-between;
   align-items: center;
 }
 .panel-btns {
   display: flex;
+  flex-direction: column;
 }
 </style>
 

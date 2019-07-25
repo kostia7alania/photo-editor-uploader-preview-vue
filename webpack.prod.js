@@ -10,6 +10,10 @@ var OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 conf.mode = 'production'
 
 conf.optimization = {
+
+  splitChunks: {
+    chunks: 'all'
+  },
   minimize: true,
   // sourceMap: false,
   minimizer: [

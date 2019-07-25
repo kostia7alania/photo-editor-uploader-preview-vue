@@ -8,7 +8,7 @@
     "build": "npm run clean && webpack --mode production",
     "serve": "webpack-dev-server --open --mode development",
     "dev2": "cross-env NODE_ENV=development webpack-dev-server  --hot --config webpack.dev.js",
-    "build2": "cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.prod.js"
+    "build2": "npm run clean && cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.prod.js"
   },
   "author": "",
   "license": "ISC",
