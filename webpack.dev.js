@@ -8,7 +8,7 @@ conf.devServer = {
   hot: true,
   proxy: {
     '/api*': {//все запросы))
-      target: 'https://apcis.tmou.org/test/',
+      target: 'https://apcis.tmou.org/develop/api',
       secure: false,
       changeOrigin: true,
       onProxyRes(proxyRes, req, res) {

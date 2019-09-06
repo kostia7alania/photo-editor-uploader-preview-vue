@@ -1,12 +1,12 @@
 <template>
-    <div v-viewer="options" class="v-viewer-modal v-viewer-modal-custom" ref="viewer">
+    <div v-viewer="{ url: 'data-original' }" class="v-viewer-modal v-viewer-modal-custom" ref="viewer">
 
-        <div v-for="img in images" class="v-viewer-modal-row" :key="img.FileName">
+        <div v-for="img in INSP_PHOTOS" class="v-viewer-modal-row" :key="img.FileName">
 
             <images-preview-open :img="img"/>
 
             <div class="v-viewer-modal-desc">
-                <p><b>Date:</b> {{img.Date | toRuDate}}</p>
+                <p><b>{{DatePhotoLabel(img)}}:</b> {{DatePhoto(img) | toRuDate}}</p>
                 <p><b>Comment:</b> {{img.Comments}}</p>
             </div>
 
@@ -20,16 +20,31 @@ export default {
   components: {
     imagesPreviewOpen: () => import("./images-preview-open.vue")
   },
-  props: ["images"],
   data() {
-    return { options: { url: "data-original" } };
+    return {};
   },
-  mounted() {
-    window.that = this;
+  computed: {
+    INSP_PHOTOS() {
+      return this.$store.state.show.INSP_PHOTOS;
+    }
+  },
+  methods: {
+    DatePhoto(obj) {
+      return obj.DatePhoto || obj.Date;
+    },
+    DatePhotoLabel(obj) {
+      return (
+        (obj.DatePhoto && "Photo date") || (obj.Date && "Photo date loaded")
+      );
+    }
   },
   filters: {
-    toRuDate(e) {
-      return new Date(e).toLocaleString("RU-ru");
+    toRuDate(d) {
+      let out;
+      if (!d.match(/\d\d:\d\d:\d\d/) || d.match("00:00:00"))
+        out = new Date(d).toLocaleDateString("Ru-ru");
+      else out = new Date(d).toLocaleString("Ru-ru");
+      return out;
     }
   }
 };

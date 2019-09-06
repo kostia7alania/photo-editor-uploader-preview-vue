@@ -8,7 +8,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 var path = require('path')
 
-const devMode = process.env.NODE_ENV !== 'production';
+const devMode = process.env.NODE_ENV == 'development';
 
 const mod = {
   mode: 'development',
@@ -22,10 +22,26 @@ const mod = {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js', //chunks USAGE => https://webpack.js.org/guides/code-splitting/
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist',
+    publicPath: devMode ? '/dist' : './js/picture-manager/dist/',
     filename: 'build.js',
   },
 
+  /* такая ошибочка была:
+      https://apcis.tmou.org/develop/
+      js/picture-manager/dist/
+      js/picture-manager/dist/
+      bg-image-flowers.jpg?af41f7588ecc023fafc49478e7ceba98
+https://apcis.tmou.org/develop/js/picture-manager/dist/js/picture-manager/dist/bg-image-flowers.jpg?af41f7588ecc023fafc49478e7ceba98
+
+исправил по етой инфе - https://webpack.js.org/loaders/file-loader/
+
+publicPath: '',
+
+https://apcis.tmou.org/develop/
+js/picture-manager/dist/bg-image-flowers.jpg
+
+
+      */
   plugins: [
     new HtmlWebpackPlugin({ template: './index.html', }),
     new webpack.HotModuleReplacementPlugin(),
@@ -65,9 +81,19 @@ const mod = {
         ]
       },
       {
-        test: /\.css$/, use: [
-          MiniCssExtractPlugin.loader,
+        test: /\.css$/,
+        use: [
+          devMode ? 'vue-style-loader'
+            : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: [
+          'vue-style-loader',
           'css-loader',
+          'stylus-loader'
         ]
       },
       /*
@@ -94,6 +120,22 @@ const mod = {
 */
       // { test: /\.scss$/, use: ['vue-style-loader', 'css-loader', 'sass-loader'], },
       //  { test: /\.sass$/, use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax'], },
+
+
+      {
+        test: /\.pug$/,
+        oneOf: [
+          // this applies to `<template lang="pug">` in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use: ['pug-plain-loader']
+          },
+          // this applies to pug imports inside JavaScript
+          {
+            use: ['html-loader', 'raw-loader', 'pug-plain-loader']
+          }
+        ]
+      },
       {
         test: /\.vue$/, loader: 'vue-loader', options: {
           loaders: {
@@ -110,7 +152,14 @@ const mod = {
         exclude: /(node_modules|bower_components)/,/*excluded node_modules*/
         use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"]/*Preset used for env setup*/ } }
       },
-      { test: /\.(png|svg|jpg|gif)$/, loader: 'file-loader', options: { name: '[name].[ext]?[hash]' } },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader?name=./js/picture-manager/dist/[name].[ext]',
+        options: {
+          name: '[name].[ext]',
+          ///outputPath: 'images',
+          publicPath: './',
+        }
+      },
       { test: /\.(woff|woff2|eot|ttf|otf)$/, use: ['file-loader'] },
       /*
             {

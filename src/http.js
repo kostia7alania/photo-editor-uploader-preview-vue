@@ -3,7 +3,7 @@
 const getModule = async () => {
     if (!('axios' in window))
         window.axios = await import(
-            /* webpackChunkName: "VUE" */
+            /* webpackChunkName: "axiOS" */
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
             /* webpackPreload: true */

@@ -13,8 +13,7 @@ export default {
   methods: {
     changeHandler(e) {
       if ("files" in e.target && e.target.files.length) {
-        const f = e.target.files;
-        this.$emit("fileListHandler", f);
+        this.$store.dispatch("CHOOSE_PHOTO_HANDLER", e.target.files);
         e.target.value = "";
       }
     }
@@ -94,6 +93,7 @@ export default {
 }
 
 .draw-border {
+  text-align: center;
   @include btn-border-drawing(#4caf50, #cd0a0a, 4px, bottom, right);
 }
 

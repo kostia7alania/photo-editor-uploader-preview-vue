@@ -1,5 +1,24 @@
-<template>
-  <div class="slidecontainer">
+<template lang="pug">
+div.slidecontainer
+  div.label-row
+    label(for="img-w") {{ label }}
+    input.img-w#img-w(
+      type=number
+      v-model="val"
+      @blur="blur_handler($event.target.value)"
+      :min="min"
+      :max="max"
+      )
+    label(for="myRange") {{label == 'Angle' && 'deg' || 'px'}}
+  div
+    input.slider#myRange(
+      type="range"
+      v-model="val"
+      :min="min"
+      :max="max"
+      )
+
+//-<div class="slidecontainer">
     <div class="label-row">
       <label for="img-w">{{label}}</label>
       <input type="number" class="img-w" id="img-w"
@@ -12,6 +31,7 @@
       v-model="val"
       :min="min" :max="max">
   </div>
+
 </template>
 
 <script>
@@ -27,18 +47,21 @@ export default {
         return this.value;
       },
       set(e) {
-        const res = this.blur_handler(e);
-        if (res) this.$emit("input", +e);
+        this.blur_handler(e);
       }
     }
   },
   mounted() {},
   methods: {
     blur_handler(val) {
-      if (!val || ("" + val).trim() == "" || +val < +this.min)
+      const v = parseInt(val);
+      if (isNaN(v)) {
         this.$emit("input", +this.min);
-      else if (val > +this.max) this.$emit("input", +this.max);
-      else return true;
+      } else if (!v || ("" + v).trim() == "" || v < +this.min)
+        this.$emit("input", +this.min);
+      else if (v > +this.max) this.$emit("input", +this.max);
+      else this.$emit("input", +v);
+      this.$forceUpdate();
     }
   }
 };
@@ -96,5 +119,4 @@ label {
   cursor: pointer;
 }
 </style>
-
 

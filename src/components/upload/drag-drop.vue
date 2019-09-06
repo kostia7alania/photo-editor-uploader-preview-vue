@@ -64,7 +64,7 @@ export default {
     handleDrop(e) {
       const dt = e.dataTransfer;
       const files = dt.files;
-      this.$emit("fileListHandler", files);
+      this.$store.dispatch("CHOOSE_PHOTO_HANDLER", files);
     }
   }
 };

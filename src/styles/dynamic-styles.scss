@@ -58,7 +58,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='111' height='111'%3E%3Crect x='2' y='2' width='107' height='107' style='fill:%23DEDEDE;stroke:%23555555;stroke-width:2'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' alignment-baseline='middle' font-family='monospace, sans-serif' fill='%23555555'%3E111×111%3C/text%3E%3C/svg%3E");
 }
 
-.viewer-title,
+.viewer-title *,
 .viewer-title > div > *,
 .viewer-title > div > * > *,
 .v-viewer-modal-img * {
@@ -83,4 +83,19 @@
 
 .ui-widget {
   font-size: unset;
+}
+
+.div_img_prev a {
+  display: block;
+  width: 50px;
+  text-decoration: unset;
+  text-align: left;
+}
+.div_img_prev a:hover {
+  color: red;
+}
+
+.viewer-toolbar * {
+  /*FIX: какой-то олень всем елементам задал сайз (на рабочем сайте) .!. */
+  font-size: 0px !important;
 }

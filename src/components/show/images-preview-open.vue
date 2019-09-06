@@ -8,46 +8,99 @@
       >
       -->
       <div>
-          <img
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-            :style="{'background-image': 'url('+prev_img_src+')'}"
+         <img
+            :src="prev_img_src"
+            :style="{'background-image': bg}"
             :data-original="real_img_src"
             :alt="imgAltComp"
           />
+          <!--
+            :style="{'background-image': 'url('+prev_img_src+')'}"
+
+          <imgPrev
+
+            hide_toolbar="false" hide_navbar="false"
+            v-if="prev_img_src"
+            :src="prev_img_src"
+            :dataOriginal="real_img_src"
+            :alt="imgAltComp"
+          />-->
+
       </div>
     </div>
 </template>
 <script>
-import config from "../../../config";
-
 export default {
   name: "images-preview-open",
   props: ["img"],
+  data() {
+    return {
+      bg:
+        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    };
+  },
+  components: {
+    imgPrev: () => import("../img-prev.vue")
+  },
   computed: {
     url() {
-      return config.base_url;
+      return this.$store.state.BASE_URL;
     },
     prev_img_src() {
       return (
-        this.url +
-        "?action=get-picture&type=small&filename=" +
-        this.img.FileName
+        this.url + "action=get-picture&size=small&filename=" + this.img.FileName
       );
     },
     real_img_src() {
       return (
-        this.url + "?action=get-picture&type=real&filename=" + this.img.FileName
+        this.url + "action=get-picture&size=real&filename=" + this.img.FileName
       );
     },
-    comments() {
-      return this.img.Comments && this.img.Comments.length && this.img.Comments;
-    },
     imgAltComp() {
-      return `
-        ${new Date(this.img.Date).toLocaleString("Ru-ru")}${
-        this.comments ? " - " + this.comments : ""
+      /*let d;
+      let what;
+      ["DateOfInspect", "DateOfSubmit", "Date"].some((e, i) => {
+        d = this.img[e];
+        return (
+          new Date(d) != "Invalid Date" &&
+          ((i == 0 && (what = "Date of Inspect")) ||
+            (i == 1 && (what = "Date of Submit")) ||
+            (i == 2 && (what = "Modified date")))
+        );
+      });
+      let out;
+      if (!d.match(/\d\d:\d\d:\d\d/) || d.match("00:00:00"))
+        out = new Date(d).toLocaleDateString("Ru-ru");
+      else out = new Date(d).toLocaleString("Ru-ru");
+      const c = this.img.Comments;
+      const com = c && "<span class='preview-user-comment'>" + c + "</span>";
+      const ret = `<b>${what}</b>:  ${out}
+                  <br><b>Comment</b>: ${com} `;
+      return ret;
+      */
+      const DateOfInspect = new Date(this.img.DateOfInspect).toLocaleDateString(
+        "ru"
+      );
+      let caption = "";
+      if ("DatePhotoFromBrowserYes" in this.img) {
+        //новая версия фоток, где есть ето поле в БД;
+        const DatePhoto = new Date(this.img.DatePhoto).toLocaleString("ru");
+        if (this.img.DatePhotoFromBrowserYes == 1)
+          caption = `<span title='Date photo when it was loaded'>, Date photo loaded: ${DatePhoto}</span>`;
+        else if (this.img.DatePhotoFromBrowserYes == 0)
+          caption = `<span title='Date photo'>, Date photo: ${DatePhoto}</span>`;
+        if (DatePhoto == "Invalid Date") caption = "";
       }
-      `;
+      const Edited =
+        (this.img.Edited == "1" &&
+          "<span title='This image was edited by user in the our editor'>[EDITED]</span><br>") ||
+        "";
+      const c = this.img.Comments;
+      const com = c && "<span class='preview-user-comment'>" + c + "</span>";
+      const ret = `${Edited}
+                  <span title='Date of inspect'>${DateOfInspect}</span>${caption}
+                  <br><b>Comment</b>: ${com} `;
+      return ret;
     }
     /* imgAltCompHTML() {
       return `<div class="v-viewer-modal-img">

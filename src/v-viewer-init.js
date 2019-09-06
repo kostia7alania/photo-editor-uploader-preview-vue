@@ -1,7 +1,15 @@
 import 'viewerjs/dist/viewer.css'
-import Viewer from 'v-viewer'
 //import Vue from 'vue'
 
+(async function () {
+    if (!('Viewer' in window))
+        await import(
+            /* webpackChunkName: "viewer_init" */
+            /* webpackMode: "lazy" */
+            /* webpackPrefetch: true */
+            /* webpackPreload: true */
+            './v-viewer-init').then(m => m.default)
+}())
 export default (() => { // https://github.com/fengyuanchen/viewerjs#options
     window.Vue.use(VueViewer.default);
     var options = {
@@ -11,11 +19,12 @@ export default (() => { // https://github.com/fengyuanchen/viewerjs#options
                 var alt = image.alt;
                 var nw = imageData.naturalWidth;
                 var nh = imageData.naturalHeight;
-                var descr = `${alt} (${nw}× ${nh})`;
+                var descr = `${alt}
+                <br>${nw} × ${nh}`;
                 return descr;
             }
         ],
-        show: (e) => console.warn('show', e)
+        show: (e) => window.devMode && console.warn('show', e)
     };
-    Viewer.setDefaults(options);
+    window.Viewer.setDefaults(options);
 })()

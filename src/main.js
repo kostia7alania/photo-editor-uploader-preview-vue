@@ -1,26 +1,32 @@
+import functions from './functions'
+window.devMode = process.env.NODE_ENV == 'development'
 
-window.showModal = async function showModal({
+
+
+import( /* webpackChunkName: "main.scss" */
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./styles/main.scss")
+
+
+window.showPicturesModal = function ({
+    CAN_UPLOAD = false,
     upload_mode = false,
-    readOnly = true,
     selector = '#photos_modal',
-    title = 'Photo manager'
+    title = 'Photo manager',
+    target = event.target
 }) {
-
-    const def_uid = event.target.attributes.def.value
-    const insp_uid = event.target.attributes.insp.value
-
-    const that = event.target
+    const args = arguments[0];
+    const def_uid = target.attributes.def.value
+    const insp_uid = target.attributes.insp.value
+    const deficiencies = functions.getDataFromTable({ target })
     //const devMode = process.env.NODE_ENV == 'development'
     //if (devMode) let elems = [{ "Code": "11129", "Nature": "Operational readiness of lifesaving appliances", "Remark": "Freefall life boat release system defective" }, { "Code": "10114", "Nature": "Voyage data recorder (VDR)/Simplified Voyage data recorder(S-VDR)", "Remark": "Hydrostatic release unit expired at VDR float-free capsule since December 2018" }, { "Code": "04110", "Nature": "Abandon ship drills", "Remark": "No record to document that freefall life boat has been manoeuvred in water in past 3 months" }]
-
-    const functions = await import(/* webpackChunkName: "functions" */ './functions').then(m => m.default)
-
-    import(/* webpackChunkName: "main.scss" */ "./styles/main.scss")
 
     functions.reAppendToBody({ selector, title })
     let w = (window.innerWidth / 1.2)
     w = w > 1000 ? 1000 : w;
-
     $(selector).dialog({
         // width: "auto",
         title,
@@ -33,44 +39,62 @@ window.showModal = async function showModal({
         position: ['center', '10'],
         minHeight: window.screen.availTop || 400,
         maxHeigh: window.screen.height / 2,
-
         create: function (event) { $(event.target).parent().css('position', 'fixed'); },
         buttons: { /*  Ok: function() { $( this ).dialog( "destroy" ); }*/ },
         close: (() => EventBus.$emit('modal_closed')),
         open: () => $(selector).dialog({ position: ['center', '10'] })
-    })
-    /* OLDWAY:
-        //import { reAppendToBody, getDataFromTable } from './functions'
-        //reAppendToBody(that)
-        */
-    //OLD WAY => import App from './App.vue'
-    //!('Vue' in window) &&
-    if (!('Vue' in window))
-        window.Vue = await import(
-            /* webpackChunkName: "VUE" */
+    });
+
+    (async function () {
+        if (!('Vue' in window))
+            window.Vue =
+                await import( //ОСТОРОЖНО! Тут теряется event и this
+                    /* webpackChunkName: "VUE" */
+                    /* webpackMode: "lazy" */
+                    /* webpackPrefetch: true */
+                    /* webpackPreload: true */
+                    '../node_modules/vue/dist/vue.min.js')
+                    .then(m => m.default)
+
+        import(
+            /* webpackChunkName: "viewer_init" */
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
             /* webpackPreload: true */
-            '../node_modules/vue/dist/vue.min.js').then(m => m.default)
-    window.EventBus = new Vue()
-    await import(
-        /* webpackChunkName: "viewer_init" */
-        /* webpackMode: "lazy" */
-        /* webpackPrefetch: true */
-        /* webpackPreload: true */
-        './v-viewer-init').then(m => m.default)
-    Vue.config.devtools = true
+            './v-viewer-init').then(m => m.default)
 
-    const App = await import(
-        /*webpackChunkName: "app_vue"*/
-        /* webpackMode: "lazy" */
-        /* webpackPrefetch: true */
-        /* webpackPreload: true */
-        './App.vue').then(m => m.default)
-    window.VUE_PICTURE = new Vue({ el: '#vue_insert', render: h => h(App), });
+        const createStore = await import(
+            /*webpackChunkName: "store"*/
+            /* webpackMode: "lazy" */
+            /* webpackPrefetch: true */
+            /* webpackPreload: true */
+            './store').then(m => m.default)
 
-    const elems = functions.getDataFromTable({ that })
-    const props = { def_uid, insp_uid, elems, upload_mode, readOnly }
-    EventBus.$emit('get_info_global', props) //photos_modal_app.get_info(props) //easy .!.
+        const App = await import(
+            /*webpackChunkName: "app_vue"*/
+            /* webpackMode: "lazy" */
+            /* webpackPrefetch: true */
+            /* webpackPreload: true */
+            './App.vue').then(m => m.default)
+
+        Vue.config.devtools = true
+
+        window.EventBus = new Vue()
+
+        window.VUE_PICTURE = new Vue({
+            el: '#vue_insert',
+            render: h => h(App, { props: { a: 1 } }),
+            store: createStore()
+
+        });
+        const props_append = { def_uid, insp_uid, deficiencies, ...args }
+        const keys = Object.keys(props_append);
+        keys.forEach(key => store.commit("SET_STATE", { key, val: props_append[key] }));
+
+
+
+    }())
+
+
+
 }
-

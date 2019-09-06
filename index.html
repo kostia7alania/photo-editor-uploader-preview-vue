@@ -3,14 +3,12 @@
     <title>Vue Hello World</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
     <!--Polyfill.io reads the User-Agent header of each request and returns polyfills that are suitable for the requesting browser-->
-    <link href="//unpkg.com/viewerjs/dist/viewer.css" rel="stylesheet" />
     <script src="//unpkg.com/vue/dist/vue.js"></script>
-    <script src="//unpkg.com/viewerjs/dist/viewer.js"></script>
+    <link href="//unpkg.com/viewerjs/dist/viewer.css" rel="stylesheet" />
+    <script src="https://unpkg.com/viewerjs@1.2.0/dist/viewer.min.js"></script>
     <script src="//unpkg.com/v-viewer/dist/v-viewer.js"></script>
     <script src="//unpkg.com/axios/dist/axios.min.js"></script>
     <!-- УЙТИ ОТ JQUERY!-->
-    <script></script>
-
     <link
       rel="stylesheet"
       href="https://apcis.tmou.org/css/jquery.arcticmodal-0.3.css"
@@ -28,28 +26,21 @@
       rel="stylesheet"
       href="https://apcis.tmou.org/css/redmond/jquery-ui-1.8.16.custom.css"
     />
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
     <script src="https://apcis.tmou.org/js/jquery-1.6.2.min.js"></script>
     <script src="https://apcis.tmou.org/js/jquery.blockui.js"></script>
     <script src="https://apcis.tmou.org/js/jquery-ui-1.8.16.custom.min.js"></script>
     <script src="https://apcis.tmou.org/js/jquery.arcticmodal-0.3.min.js"></script>
-
-    <!--
-    <link type="text/css" rel="stylesheet" href="./js/photos_libs/styles_for_index.php.css"/>
-    -->
   </head>
 
   <body>
     <!--
-    <div id="modal" title="Photo manager">
-      <div id="photos_modal_app">
-        <div id="app"></div>
-      </div>
-    </div>
-  -->
-
+        <div id="modal" title="Photo manager">
+          <div id="photos_modal_app">
+            <div id="app"></div>
+          </div>
+        </div>
+      -->
     <table>
       <tbody>
         <tr>
@@ -77,20 +68,16 @@
           <td style="text-align:left">30 - Detainable deficiency</td>
           <td rowspan="3"></td>
           <td rowspan="3">
-            <div class="div_img_prev">
+            <div class="div_img_prev prev_manag">
               <a
-                class="redHover"
                 href="javascript:;"
                 def="FE21509A-1AB3-41B7-B97F-FBD3EEE820F9"
                 insp="347134C7-60E4-44E1-9A90-12071E799636"
-                onclick="showModal({readOnly: true, upload_mode: false})"
                 >Show <span class="badge bg-red">5</span></a
               ><br /><a
-                class="redHover"
                 href="javascript:;"
                 def="FE21509A-1AB3-41B7-B97F-FBD3EEE820F9"
                 insp="347134C7-60E4-44E1-9A90-12071E799636"
-                onclick="showModal({readOnly: true, upload_mode: true})"
                 >Upload</a
               >
             </div>
@@ -118,20 +105,18 @@
           </td>
           <td rowspan="3"></td>
           <td rowspan="3">
-            <div class="div_img_prev">
+            <div class="div_img_prev prev_manag">
               <a
-                class="redHover"
                 href="javascript:;"
                 def="19B37D3C-BF5F-40D7-ACC5-14FC9C9B7AF7"
                 insp="347134C7-60E4-44E1-9A90-12071E799636"
-                onclick="showModal({readOnly: true, upload_mode: false})"
                 >Show <span class="badge bg-green">1</span></a
-              ><br /><a
-                class="redHover"
+              >
+              <br />
+              <a
                 href="javascript:;"
                 def="19B37D3C-BF5F-40D7-ACC5-14FC9C9B7AF7"
                 insp="347134C7-60E4-44E1-9A90-12071E799636"
-                onclick="showModal({readOnly: false, upload_mode: true})"
                 >Upload</a
               >
             </div>
@@ -157,21 +142,17 @@
           </td>
           <td rowspan="3"></td>
           <td rowspan="3">
-            <div class="div_img_prev">
+            <div class="div_img_prev prev_manag">
               <a
-                class="redHover"
                 href="javascript:;"
                 def="1594364B-C81E-4A85-8C54-B2CEB4F6D22C"
                 insp="FC9F9AD8-D24F-437F-9374-A01273AC95E6"
-                onclick="showModal({readOnly: true, upload_mode: false})"
                 >Show <span class="badge bg-blue">0</span></a
               ><br />
               <a
-                class="redHover"
                 href="javascript:;"
                 def="1594364B-C81E-4A85-8C54-B2CEB4F6D22C"
                 insp="FC9F9AD8-D24F-437F-9374-A01273AC95E6"
-                onclick="showModal({readOnly: false, upload_mode: true})"
                 >Upload</a
               >
             </div>
@@ -179,7 +160,20 @@
         </tr>
       </tbody>
     </table>
-
+    <script>
+      function renderPictureManeger() {
+        //var BASE_URL = https://apcis.tmou.org/develop/api?
+        var upload_mode = this.innerText.match(/upload/i);
+        showPicturesModal({
+          CAN_UPLOAD: true,
+          upload_mode: upload_mode,
+          target: this
+        });
+      }
+      document.querySelectorAll(".prev_manag a").forEach(function(e) {
+        e.addEventListener("click", renderPictureManeger);
+      });
+    </script>
     <script src="/dist/build.js"></script>
   </body>
 </html>

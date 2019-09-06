@@ -1,76 +1,69 @@
 <template>
-  <div class="files-container">
+  <div class="file-container" :class="{'file-container-highlighted': isAlreadyUploaded}">
+      <div v-if="isAlreadyUploaded">
+        <p class="already-uploaded-text">This image is already uploaded!</p>
+      </div>
     <div class="files-row">
         <div class="m_p-5 text-left upload-left-side">
-          <p><b>Name:</b> {{upd.name}}</p>
-          <p><b>Type:</b> {{upd.type}}</p>
-          <p><b>Date:</b> {{upd.lastModifiedDate}}</p>
-          <p v-if="!upd.base64"><b>Size:</b>  {{upd.size | size_filter}}</p>
-          <p v-else ><b>New size:</b>         {{getSizeFromBase64 | size_filter}}</p>
-          <p><b>Your comments:</b></p>
-          <vue-textarea :readonly="isBlockedTextArea" :obj="upd" obj_key='comment'/>
+          <upload-item-info :upd="upd"/>
+
+          <vue-textarea
+              :readonly="isBlockedTextArea"
+              :value="upd.comment"
+              @input="SET_UP_COMMENT"
+            />
         </div>
+
         <div class="upload-right-side">
 
           <img-prev
-            :src="upd.base64 || upd.url"
+            :src="createObjectUrl"
+            :base64="upd.base64"
             :alt="img_prev_alt"
+            :cls="canUpload"
+            hide_navbar="true"
           />
 
-          <div class="panel-btns">
-
-              <button
-                :class="{'blocked-btn': isBlockedUpload}"
-                class="modal-buttons"
-                @click="upload" type="button">
-                Upload</button>
-
-              <button
-                :class="{'blocked-btn': isBlockedCancel}"
-                class="modal-buttons"
-                @click="cancelUploading" type="button">Cancel</button>
-
-              <button
-                :class="{'blocked-btn': isBlockedDelete}"
-                class="modal-buttons"
-                @click="$emit('delete')" type="button">Delete</button>
-
-                <button
-                :class="{'blocked-btn': isBlockedEdit, 'editor-open-btn':editor}"
-                class="modal-buttons"
-                @click="edit" type="button">
-                  Editor
-                  {{editor?"-":'+'}}
-                </button>
-
-                <button
-                :class="{'blocked-btn': isBlockedRevert}"
-                class="modal-buttons"
-                @click="revert" type="button">
-                  Revert
-                </button>
-
-
-            </div>
+          <uploadItemButtons
+            @edit="edit"
+            :upd="upd"
+            :editor="editor"
+            :isBlockedUpload="isBlockedUpload"
+            :isBlockedDelete="isBlockedDelete"
+            :isBlockedEdit="isBlockedEdit"
+            :isBlockedRevert="isBlockedRevert"
+          />
 
           <error-render v-if="upd.error" :error="upd.error || error" :upload_mode="true"/>
 
         </div>
     </div>
-  <div>
-    <progressVue :percentage="percentage" />
-    <p class="text-red" v-if="ERROR_maxSize"><b>ERROR:</b> Exceeded the maximum file size of {{maxFileSize}} MB</p>
-    <p class="text-red" v-if="errorMsg"><b>ERROR:</b> {{errorMsg}} </p>
-  </div>
-
-  <app-photo-editor v-if="editor" :alt="img_prev_alt" :editor="editor" :upd="upd" @close="closeEditor"/>
+    <div>
+      <progressVue :percentage="PERCENTAGE" v-if="loading"/>
+      <p class="text-red" v-if="ERROR_maxSize"><b>ERROR:</b> Exceeded the maximum file size of {{maxFileSize}} MB</p>
+      <p class="text-red" v-if="ERROR"><b>ERROR:</b> {{ERROR}} </p>
+    </div>
+  <app-photo-editor v-if="editor" :alt="img_prev_alt" :editor="editor" :upd="upd" @save="saveEditor" @cancel="cancelEditor"/>
 
   </div>
 </template>
 
 <script>
-import config from "../../../config";
+import { loading, error, delay, timeout } from "../../stages";
 
+const uploadItemInfo = () => ({
+  component: import(
+    /* webpackChunkName: "upload-item-info"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./upload-item-info"
+  ),
+  loading,
+  error,
+  delay,
+  timeout
+});
 const appPhotoEditor = () => ({
   component: import(
     /* webpackChunkName: "app-photo-editor"*/
@@ -79,35 +72,76 @@ const appPhotoEditor = () => ({
     /* webpackPreload: true */
     "../photo-editor/app-photo-editor.vue"
   ),
-  loading: {
-    template: `<h1 style="color:red">!!!!!!!!! LOADING !!!!!!!!!</h1>`
-  },
-  error: { template: `<div>. . . ERROR...</div>` },
-  delay: 20,
-  timeout: 25000
+  loading,
+  error,
+  delay,
+  timeout
+});
+const uploadItemButtons = () => ({
+  component: import(
+    /* webpackChunkName: "uploadItemButtons"*/
+    /* webpackMode: "lazy" */
+    /* webpackPrefetch: true */
+    /* webpackPreload: true */
+    "./upload-item-buttons"
+  ),
+  loading,
+  error,
+  delay,
+  timeout
 });
 
 export default {
   name: "upload-item",
-  props: ["upd", "insp_uid", "def_uid"],
+  props: ["upd"],
   components: {
     errorRender: () => import("../error-render.vue"),
-    imgPrev: () => import("./img-prev.vue"),
+    imgPrev: () => import("../img-prev.vue"),
     progressVue: () => import("./progress.vue"),
     vueTextarea: () => import("../elements/vue-textarea.vue"),
-    appPhotoEditor
+    appPhotoEditor,
+    uploadItemButtons,
+    uploadItemInfo
   },
   data() {
     return {
-      editor: null,
-      loading: false,
-      source: null,
-      errorMsg: null,
-      percentage: null
+      editor: null
     };
   },
 
   computed: {
+    isAlreadyUploaded() {
+      return this.$store.state.show.INSP_PHOTOS.filter(
+        e => e.Hash == this.upd.hash
+      ).length;
+    },
+    ERROR() {
+      return this.upd.ERROR;
+    },
+    PERCENTAGE() {
+      this.upd.PERCENTAGE;
+    },
+    createObjectUrl() {
+      return window.URL.createObjectURL(this.upd.file);
+    },
+    isBlockedUpload() {
+      return this.loading || this.ERROR_maxSize || this.editor;
+    },
+    isBlockedDelete() {
+      return this.loading;
+    },
+    isBlockedEdit() {
+      return this.isBlockedDelete; // || this.ERROR_maxSize;
+    },
+    isBlockedRevert() {
+      return !this.upd.base64 || this.loading;
+    },
+    canUpload() {
+      return (this.$store.state.CAN_UPLOAD && "blocked-btn") || "";
+    },
+    loading() {
+      return this.upd.CANCEL_SOURCE;
+    },
     getSizeFromBase64() {
       const img = this.upd.base64;
       if (!img) return "";
@@ -115,134 +149,47 @@ export default {
       return 4 * Math.ceil(len / 3) * 0.5624896334383812;
     },
     url() {
-      return config.base_url;
+      return this.$store.state.BASE_URL;
     },
     maxFileSize() {
-      return config.maxFileSize;
+      return this.$store.state.maxFileSize;
     },
     ERROR_maxSize() {
-      return this.upd.size / 1024 / 1024 > this.maxFileSize;
+      if (
+        //this.upd.base64 && (this.upd.base64.length * (3 / 4)) / 1024 / 1024 > this.maxFileSize
+        this.getSizeFromBase64
+      )
+        return this.getSizeFromBase64 / 1024 / 1024 > this.maxFileSize;
+
+      return this.upd.file.size / 1024 / 1024 > this.maxFileSize;
     },
     isBlockedTextArea() {
       return this.loading || this.ERROR_maxSize;
-    },
-    isBlockedUpload() {
-      return this.loading || this.ERROR_maxSize || this.editor;
-    },
-    isBlockedCancel() {
-      return !this.source;
-    },
-    isBlockedDelete() {
-      return this.loading;
-    },
-    isBlockedEdit() {
-      return this.isBlockedDelete || this.ERROR_maxSize;
-    },
-    isBlockedRevert() {
-      return !this.upd.base64;
     },
     img_prev_alt() {
       const comment = this.upd.comment
         ? `. Comment: "${this.upd.comment}"`
         : "";
       const changed = this.upd.base64 ? " [CHANGED]" : "";
-      return this.upd.name + comment + changed;
+      return this.upd.file.name + comment + changed;
     }
-  },
-  mounted() {
-    window.e = this;
-    //EventBus.$on("editor_mode", (state = false) => (this.editor = state));
   },
   methods: {
-    revert() {
-      this.$delete(this.upd, "base64");
+    SET_UP_COMMENT(comment) {
+      this.$store.commit("SET_UP_COMMENT", { comment, hash: this.upd.hash });
     },
-    closeEditor(base64) {
-      console.log("closeEditor");
+    cancelEditor() {
       this.editor = null;
-      if (base64) {
-        // save?
-        this.$set(this.upd, "base64", base64);
-      }
+    },
+    saveEditor(base64) {
+      this.$store.commit("SET_BASE64", { hash: this.upd.hash, base64 });
+      this.editor = null;
     },
     edit() {
-      if (!this.editor) this.editor = this.upd.url;
-      else this.editor = null;
-      //EventBus.$emit("editor_mode", this.upd.url);
+      this.editor = this.editor ? null : this.createObjectUrl;
     },
-    onUploadProgress(e) {
-      this.percentage = Math.round((e.loaded * 100.0) / e.total || 100);
-    },
-    cancelUploading() {
-      this.source.cancel("Operation canceled by the user");
-    },
-    async upload() {
-      this.loading = true;
-      this.errorMsg = null;
-
-      "axios" in window ||
-        (await import(/* webpackChunkName: "http" */ "../../http.js").then(
-          m => (window.axios = m.default)
-        ));
-
-      const formData = new FormData();
-      const e = this.upd;
-      formData.append(`files-0`, e.fileSelf);
-      formData.append("comments[]", e.comment);
-      formData.append("insp_uid", this.insp_uid);
-      formData.append("def_uid", this.def_uid);
-
-      const CancelToken = axios.CancelToken;
-      const source = CancelToken.source();
-      const axios_config = {
-        onUploadProgress: this.onUploadProgress,
-        cancelToken: source.token,
-        headers: { "content-type": "multipart/form-data" }
-      };
-      const url = this.url + "?action=savepic_kost";
-      this.source = source;
-      axios
-        .post(url, formData, axios_config)
-        .then(res => {
-          if (typeof res.data !== "object" || !("errors" in res.data))
-            throw { message: "no data.!." };
-          else if (res.data.errors.length > 0)
-            this.errorMsg = res.data.errors[0] || "An error has occurred";
-          else setTimeout(() => this.$emit("finished"));
-        })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-            this.errorMsg = error.message;
-          }
-          console.log(error, error.config);
-        })
-        .finally(() => {
-          this.loading = false;
-          this.source = false;
-          this.percentage = false;
-        });
-    }
-  },
-  filters: {
-    size_filter(e) {
-      window.size = e;
-      //console.log("size", e);
-      return e / 1024 / 1024 > 1
-        ? (e / 1024 / 1024).toFixed(0) + " MB"
-        : (e / 1024).toFixed(0) + " KB";
+    upload() {
+      this.$store.dispatch("UPLOAD_INSP_PHOTO", this.upd.hash);
     }
   }
 };
@@ -250,13 +197,10 @@ export default {
 
 
 <style lang="scss" scoped>
-.editor-open-btn {
-  color: red;
-}
 .text-left {
   text-align: left;
 }
-.files-container {
+.file-container {
   padding: 5px;
   border-top: 5px dashed #006798;
 }
@@ -264,34 +208,31 @@ export default {
   display: flex;
   justify-content: space-between;
 
-  .upload-left-side {
-    flex: 1 1 20em;
-    max-width: 42vw;
-  }
-
   .upload-right-side {
+    display: flex;
+    align-content: space-between;
+    align-items: center;
     flex: 2 2 20em;
   }
 }
 .m_p-5 > p {
   margin: 5px;
 }
+.already-uploaded-text {
+  text-align: center;
+  color: red;
+  font-size: 2em;
+}
+.file-container-highlighted {
+  color: white;
+  background: linear-gradient(
+      45deg,
+      rgba(103, 0, 31, 0.8),
+      rgba(34, 101, 163, 0.5)
+    ),
+    url(./bg-image-flowers.jpg);
+  background-size: cover;
+}
 </style>
 
-<style scoped>
-.blocked-btn {
-  color: #322525 !important;
-  background: grey !important;
-  pointer-events: none;
-}
-.upload-right-side {
-  display: flex;
-  align-content: space-between;
-  align-items: center;
-}
-.panel-btns {
-  display: flex;
-  flex-direction: column;
-}
-</style>
 

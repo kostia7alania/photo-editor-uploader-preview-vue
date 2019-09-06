@@ -1,6 +1,6 @@
 <template>
     <textarea
-        :class="readonly?'blocked-btn':''"
+        :class="cls"
         placeholder="This is an awesome comment box"
         rows="20"
         name="comment[text]"
@@ -13,24 +13,22 @@
         aria-haspopup="true"
         :maxlength="max || 1000"
         v-model.trim="model"
-
     >
     </textarea>
 </template>
 <script>
 export default {
   name: "text-area",
-  props: ["obj", "obj_key", "readonly", "max"],
+  props: ["value", "max", 'cls'],
   computed: {
     model: {
       get() {
-        return this.obj[this.obj_key];
+        return this.value;
       },
       set(e) {
-        this.obj[this.obj_key] =
-          e && e.replace(/\r?\n{2,}/gim, "\r\n").replace(/(	| ){1,}/g, " ");
+       this.$emit('input', e && e.replace(/\r?\n{2,}/gim, "\r\n").replace(/(	| ){1,}/g, " "))
       }
-    }
+    },
   }
 };
 </script>

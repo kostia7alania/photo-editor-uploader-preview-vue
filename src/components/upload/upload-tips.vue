@@ -1,7 +1,7 @@
 <template>
       <div class="upload-tips text-left">
         <span
-            @click="showTip=!showTip"
+            @click="toggleShowUploadTip"
             class="close-tip"
            :data-title="title"
            data-title-left
@@ -24,15 +24,12 @@ export default {
   name: "upload-tips",
   data() {
     return {
-      showTip: null
     };
   },
-  watch: {
-    showTip(neww, old) {
-      EventBus.showTip = neww;
-    }
-  },
   computed: {
+    showTip(){
+      return this.$store.state.SHOW_UPLOAD_TIP
+    },
     tipIcon() {
       return (this.showTip && "x") || "?";
     },
@@ -40,11 +37,10 @@ export default {
       return (this.showTip && "Close tip") || "Show tip";
     }
   },
-  beforeMount() {
-    if (EventBus && !("showTip" in EventBus)) {
-      EventBus.showTip = true;
-    }
-    this.showTip = EventBus.showTip;
+  methods: {
+    toggleShowUploadTip(){
+      this.$store.commit('TOGGLE_SHOW_UPLOAD_TIP')
+    },
   }
 };
 </script>
