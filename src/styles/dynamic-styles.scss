@@ -99,3 +99,11 @@
   /*FIX: какой-то олень всем елементам задал сайз (на рабочем сайте) .!. */
   font-size: 0px !important;
 }
+
+div#photos_modal {
+  margin: 10px;
+}
+
+.v-viewer-modal.v-viewer-modal-custom,
+.ui-dialog {
+}

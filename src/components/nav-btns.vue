@@ -75,7 +75,7 @@ export default {
     },
 
     keyHandler(e) {
-      if (this.upload_mode || !document.querySelector(".viewer-in")) return;
+      if (this.upload_mode || document.querySelector(".viewer-in")) return;
       e = e || window.event;
       if (e.key === "ArrowRight") this.nextHandler();
       if (e.key === "ArrowLeft") this.prevHandler();

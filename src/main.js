@@ -34,15 +34,18 @@ window.showPicturesModal = function ({
         modal: true,
         height: window.screen.availTop || 400,
         width: w || 600,
-        minWidth: 777,
+        minWidth: 577,
         maxWidth: 1777,
         position: ['center', '10'],
-        minHeight: window.screen.availTop || 400,
+        minHeight: 200,
+
         maxHeigh: window.screen.height / 2,
-        create: function (event) { $(event.target).parent().css('position', 'fixed'); },
+        create: function (event) {
+            //$(event.target).parent().css('position', 'fixed');
+        },
         buttons: { /*  Ok: function() { $( this ).dialog( "destroy" ); }*/ },
         close: (() => EventBus.$emit('modal_closed')),
-        open: () => $(selector).dialog({ position: ['center', '10'] })
+        // open: () => $(selector).dialog({ position: ['center', '10'] })
     });
 
     (async function () {
