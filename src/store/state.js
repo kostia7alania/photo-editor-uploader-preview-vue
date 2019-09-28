@@ -1,6 +1,7 @@
 const devMode = process.env.NODE_ENV == 'development' //window.location.href.match('https')
 window.devMode && console.warn('MODE => ', process.env.NODE_ENV, process)
-const BASE_URL = devMode ? './api/?api=picture-manager&' : './api/?api=picture-manager&'
+//const BASE_URL = devMode ? './api/?api=picture-manager&' : './api/?api=picture-manager&'
+const BASE_URL = './api/?api=picture-manager&'
 
 const state = {
   production: 1, // 0 тест, 1 - продакшн
