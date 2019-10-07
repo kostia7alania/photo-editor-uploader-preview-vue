@@ -33,9 +33,8 @@ export default {
       return obj.DatePhoto || obj.Date;
     },
     DatePhotoLabel(obj) {
-      return (
-        (obj.DatePhoto && "Photo date") || (obj.Date && "Photo date loaded")
-      );
+      return "Photo loaded";
+      //((obj.DatePhoto && "Photo date") || (obj.Date && "Photo date loaded"));
     }
   },
   filters: {

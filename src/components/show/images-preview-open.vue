@@ -82,24 +82,34 @@ export default {
         "ru"
       );
       let caption = "";
+      let titleDate = "";
       if ("DatePhotoFromBrowserYes" in this.img) {
-        //новая версия фоток, где есть ето поле в БД;
         const DatePhoto = new Date(this.img.DatePhoto).toLocaleString("ru");
-        if (this.img.DatePhotoFromBrowserYes == 1)
-          caption = `<span title='Date photo when it was loaded'>, Date photo loaded: ${DatePhoto}</span>`;
-        else if (this.img.DatePhotoFromBrowserYes == 0)
-          caption = `<span title='Date photo'>, Date photo: ${DatePhoto}</span>`;
-        if (DatePhoto == "Invalid Date") caption = "";
+        // Сказали УБРАТЬ даты из подписи фоток
+        //новая версия фоток, где есть ето поле в БД;
+        if (this.img.DatePhotoFromBrowserYes == 1) {
+          caption = `<span title='Date photo when it was loaded'>, Photo date: ${DatePhoto}</span>`;
+          titleDate = ". Date photo when it was loaded: " + DatePhoto;
+        } else if (this.img.DatePhotoFromBrowserYes == 0) {
+          caption = `<span title='Date photo'>, Photo date: ${DatePhoto}</span>`;
+          titleDate = ". Date photo: " + DatePhoto;
+        }
+        if (DatePhoto == "Invalid Date") {
+          caption = `<span title='Unavailable'>, Photo date: N/A </span>`;
+          titleDate = ". Photo date: N/A";
+        }
       }
-      const Edited =
-        (this.img.Edited == "1" &&
-          "<span title='This image was edited by user in the our editor'>[EDITED]</span><br>") ||
-        "";
+      const Edited = ""; //(this.img.Edited == "1" && "<span title='This image was edited by user in the our editor'>[EDITED]</span><br>") || //пока вырубаем оповещение о том,что фотка была отредактирована! || "";
+      const editedTitle =
+        (this.img.Edited == "1" && ". The photo was edited by user.") || "";
       const c = this.img.Comments;
       const com = c && "<span class='preview-user-comment'>" + c + "</span>";
-      const ret = `${Edited}
-                  <span title='Date of inspect'>${DateOfInspect}</span>${caption}
-                  <br><b>Comment</b>: ${com} `;
+      const dOfInsp = `<span title='Date of inspect'>${DateOfInspect}</span>`;
+      const ret = ` ${
+        (Edited && 0) || "" /*пока вырубили показ отредактированности*/
+      }
+                    ${(caption && 0) || ""}
+                  <br><b title='Date of inspect: ${DateOfInspect}${titleDate}${editedTitle}'>Comment</b>: ${com} `;
       return ret;
     }
     /* imgAltCompHTML() {
