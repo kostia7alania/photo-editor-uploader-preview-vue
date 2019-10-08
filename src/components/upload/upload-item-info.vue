@@ -5,7 +5,7 @@
     <p data-title-left-top :data-title="exif_comp"><b>Date:</b> {{fileDate}}</p>
     <p v-if="!upd.base64" :class="ERROR_maxSize&&'text-red'"><b>Size:</b>  {{upd.file.size | size_filter}}</p>
     <p v-else data-title-left-top :data-title="'Before editing: '+ size_filter_m(upd.file.size)" ><b>New size:</b>         {{getSizeFromBase64 | size_filter}}</p>
-    <p><b>Your comments:</b></p>
+    <p><b>Photo comments:</b></p>
   </div>
 </template>
 
@@ -92,7 +92,7 @@ export default {
     },
     img_prev_alt() {
       const comment = this.upd.comment
-        ? `. Comment: "${this.upd.comment}"`
+        ? `. Photo comments: "${this.upd.comment}"`
         : "";
       const changed = this.upd.base64 ? " [CHANGED]" : "";
       return this.upd.file.name + comment + changed;

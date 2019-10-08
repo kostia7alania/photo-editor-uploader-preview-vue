@@ -7,7 +7,7 @@
 
             <div class="v-viewer-modal-desc">
                 <p><b>{{DatePhotoLabel(img)}}:</b> {{DatePhoto(img) | toRuDate}}</p>
-                <p><b>Comment:</b> {{img.Comments}}</p>
+                <p v-if="img.Comments"><b>Photo comments:</b> {{img.Comments}}</p>
             </div>
 
         </div>

@@ -1,7 +1,7 @@
 <template>
     <textarea
         :class="cls"
-        placeholder="This is an awesome comment box"
+        placeholder="This is a photo comments box"
         rows="20"
         name="comment[text]"
         id="comment_text"
@@ -19,16 +19,19 @@
 <script>
 export default {
   name: "text-area",
-  props: ["value", "max", 'cls'],
+  props: ["value", "max", "cls"],
   computed: {
     model: {
       get() {
         return this.value;
       },
       set(e) {
-       this.$emit('input', e && e.replace(/\r?\n{2,}/gim, "\r\n").replace(/(	| ){1,}/g, " "))
+        this.$emit(
+          "input",
+          e && e.replace(/\r?\n{2,}/gim, "\r\n").replace(/(	| ){1,}/g, " ")
+        );
       }
-    },
+    }
   }
 };
 </script>

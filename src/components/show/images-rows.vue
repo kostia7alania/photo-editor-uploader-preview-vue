@@ -2,9 +2,9 @@
   <div>
 
     <div class="images-rows--description">
-      <b>Remark: </b>{{remark}}<br> <!-- elem.Remark <- deprecated!!-->
+      <b>Date of inspection:</b> {{DateOfInspect}}<br>
       <b>Nature: </b>{{nature}}<br>
-      <b>Date of inspect:</b> {{DateOfInspect}}<br>
+      <b>Remark: </b>{{remark}}<br> <!-- elem.Remark <- deprecated!!-->
       <b>Count of photos in the deficiency:</b> {{photosCount}}<br>
       <div class="text-gray" v-if="photosCount>0">Click on the photo to enlarge</div>
     </div>

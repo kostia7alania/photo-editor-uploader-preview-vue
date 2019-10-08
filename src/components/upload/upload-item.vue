@@ -168,7 +168,7 @@ export default {
     },
     img_prev_alt() {
       const comment = this.upd.comment
-        ? `. Comment: "${this.upd.comment}"`
+        ? `. Photo comments: "${this.upd.comment}"`
         : "";
       const changed = this.upd.base64 ? " [CHANGED]" : "";
       return this.upd.file.name + comment + changed;

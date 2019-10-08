@@ -45,22 +45,28 @@
 <script>
 export default {
   name: "upload-item-buttons",
-  props: ["upd", 'editor', 'isBlockedUpload', 'isBlockedDelete', 'isBlockedEdit', 'isBlockedRevert'],
+  props: [
+    "upd",
+    "editor",
+    "isBlockedUpload",
+    "isBlockedDelete",
+    "isBlockedEdit",
+    "isBlockedRevert"
+  ],
   data() {
     return {};
   },
 
   computed: {
-
     img_prev_alt() {
       const comment = this.upd.comment
-        ? `. Comment: "${this.upd.comment}"`
+        ? `. Photo comments: "${this.upd.comment}"`
         : "";
       const changed = this.upd.base64 ? " [CHANGED]" : "";
       return this.upd.name + comment + changed;
     },
     isBlockedCancel() {
-      return !this.upd.CANCEL_SOURCE
+      return !this.upd.CANCEL_SOURCE;
     }
   },
   methods: {
@@ -71,7 +77,7 @@ export default {
       this.$store.commit("SET_BASE64", { hash: this.upd.hash, base64: null });
     },
     edit() {
-      this.$emit('edit')
+      this.$emit("edit");
     },
     cancelUploading() {
       this.upd.CANCEL_SOURCE.cancel("Operation canceled by the user");
@@ -104,9 +110,9 @@ export default {
     justify-content: center;
     align-items: center;
     svg {
-          vertical-align: middle;
-          width: 19px;
-          margin-right: 5px;
+      vertical-align: middle;
+      width: 19px;
+      margin-right: 5px;
     }
   }
 }

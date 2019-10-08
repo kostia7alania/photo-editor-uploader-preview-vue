@@ -104,12 +104,12 @@ export default {
         (this.img.Edited == "1" && ". The photo was edited by user.") || "";
       const c = this.img.Comments;
       const com = c && "<span class='preview-user-comment'>" + c + "</span>";
-      const dOfInsp = `<span title='Date of inspect'>${DateOfInspect}</span>`;
+      const dOfInsp = `<span title='Date of inspection'>${DateOfInspect}</span>`;
       const ret = ` ${
         (Edited && 0) || "" /*пока вырубили показ отредактированности*/
       }
                     ${(caption && 0) || ""}
-                  <br><b title='Date of inspect: ${DateOfInspect}${titleDate}${editedTitle}'>Comment</b>: ${com} `;
+                  <br><b title='Date of inspection: ${DateOfInspect}${titleDate}${editedTitle}'>Photo comments:</b>: ${com} `;
       return ret;
     }
     /* imgAltCompHTML() {
@@ -119,7 +119,7 @@ export default {
                   )}</p>
                   ${
                     this.img.Comments.trim().length > 0
-                      ? "<p><b>Comment:</b> " + this.img.Comments + "</p>"
+                      ? "<p><b>Photo comments: </b> " + this.img.Comments + "</p>"
                       : ""
                   }
                 </div>`;
