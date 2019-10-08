@@ -7,7 +7,8 @@
 <img src="./demo/preview-3.gif">
 <img src="./demo/preview-4.gif">
 
-=== TAGS ===
+### === TAGS ===
+
 生命 周期, vue js コンポーネント,
 Vue ,
 VueJs ,
