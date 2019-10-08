@@ -34,4 +34,3 @@ Image Uploader ,
 Vue Component ,
 Crop Image ,
 Axios
-#Vue #VueJs #Jquery #VueDemo #PictureUploader #VuePictureUploader #VueImageUpload #ImageUpload #Vuejs #VuejsTutorial #FilesUploadWithVue #ImageResize #VuejsImageCrop #VuejsImageResize #LaravelImageCrop #VuePictureUpload #UploadPictureVueJs #VueProfilePictureUpload #VuepictureinputUpload #HowToUploadImagesOrFilesInPhp #LearnVue #ImageUploader #VueComponent #CropImage #Axios
