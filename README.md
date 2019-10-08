@@ -1,4 +1,6 @@
-# Photo editor & uploader & Preview & VUE JS & WebPack 4 & JQuery
+# Picture Uploader, Preview, Editor, Cropper
+
+## Using VUE JS, JQuery, WebPack 4
 
 <img src="./demo/preview-1.gif">
 <img src="./demo/preview-2.gif">
