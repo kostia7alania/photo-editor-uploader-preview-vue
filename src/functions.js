@@ -33,7 +33,7 @@ export const getDataFromTable = selector => {
 
 
 export default {
-    reAppendToBody({ selector = '#photos_modal', title = 'Photo manager' }) {
+    reAppendToBody({ selector = '#photos_modal', title = 'Deficiency Image Data' }) {
         $(selector).remove()
         const div = document.createElement('div')
         let cls = '', id = '';
@@ -70,7 +70,7 @@ export default {
     },
     modalPageTitleHandler() {
         //const old = $("#photos_modal").dialog("option", "title");
-        const modalTitle = "Photo manager";
+
         const index = store.getters.deficiencies_index
         const elems = store.state.deficiencies
         const title_page = !Number.isNaN(index + 1) && elems.length

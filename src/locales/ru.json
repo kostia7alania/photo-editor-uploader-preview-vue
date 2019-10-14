@@ -1,0 +1,86 @@
+{
+  "comment-placeholder": "Место для комментария",
+  "need-authorization": "Нужно снова авторизироваться и перезайти в модальное окно",
+  "nav-btns": {
+    "Previous": "Предыдущая",
+    "Show-pictures": "Просмотр",
+    "Upload-pictures": "Загрузить",
+    "Next": "Следующая"
+  },
+  "Choose-images": "Выбрать фото",
+  "release-mouse": "Отпустите мышь, чтобы добавить фото",
+  "upload-item-buttons": {
+    "Upload": "Загрузить",
+    "Cancel": "Остановить",
+    "Delete": "Удалить",
+    "Editor": "Редактор",
+    "Revert": "Вернуть"
+  },
+  "upload-item-info": {
+    "Name": "Имя",
+    "Date": "Дата",
+    "Size": "Размер",
+    "New-size": "Новый размер",
+    "Type": "Тип",
+    "Before-editing": "До редактирования",
+    "Data-modified": "Дата изменения",
+    "EXIF-DateTime": "Время из фото",
+    "GPS-Date-Stamp": "Дата из GPS",
+    "Photo-comments": "Комментарии к фото",
+    "CHANGED": "[ИЗМЕНЕНО]"
+  },
+  "size": {
+    "B": "B",
+    "KB": "KB",
+    "MB": "MB",
+    "GB": "GB"
+  },
+  "upload-item": {
+    "exceeded-max-file-size": "Превышен лимит размера: {0} МБ",
+    "already-uploaded": "Это фото уже загружено",
+    "ERROR": "ОШИБКА"
+  },
+  "upload-tips": {
+    "You-can-choose": "Вы можете выбрать и загрузить сразу несколько фото параллельно",
+    "Recommended-file-types": "Рекомендуемый тип",
+    "Recommended-file-size": "Максимально рекомендуемый размер",
+    "file-size": "5 МБ",
+    "file-types": "jpeg (jpg), png, gif",
+    "Resolution": "Разрешение",
+    "Resolution_val": "в пределах 4k",
+    "Click-choose-or-drag": "Кликните 'Выбрать фото' или перетащите фото на эту область, чтобы добавить фото на панель предпросмотра",
+    "Close-tip": "Скрыть советы",
+    "Show-tip": "Показать советы"
+  },
+  "photo-info": {
+    "Original": "Оригинал",
+    "New": "Новый",
+    "Size": "Размер",
+    "Resolution": "Разрешение"
+  },
+  "app-photo-editor": {
+    "Crop-and-save": "Отредактируйте и сохраните",
+    "Cancel": "Отмена",
+    "Save": "Сохранить"
+  },
+  "images-preview-open": {
+    "Date-of-inspection": "Дата инспекции",
+    "Photo-date": "Дата фото",
+    "when-it-was-loaded": "Дата, когда было загружено фото",
+    "photo-was-edited": "Это фото было изменено пользователем перед загрузкой",
+    "Photo-comments": "Комментарии к фотографии"
+  },
+  "images-rows": {
+    "Date-of-inspection": "Дата инспекции",
+    "Nature": "Nature",
+    "Remark": "Remark",
+    "Count-of-photos": "Количество фотографий в замечании",
+    "click-to-enlarge": "Кликните по фото, чтобы увеличить",
+    "no-photos": "Фотографий не найдено"
+  },
+  "images-preview": {
+    "Photo-date": "Дата фото",
+    "Photo-was-taken": "Сфотографировано",
+    "Photo-comments": "Комментарии к фото"
+  }
+}

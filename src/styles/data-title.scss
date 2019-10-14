@@ -1,9 +1,6 @@
+/*тул типы => https://vk.com/wall-125614288_1303 */
 [data-title] {
   position: relative;
-  &[data-title-left]:hover::before {
-    left: -66px;
-    bottom: 0px;
-  }
   &:hover::before {
     content: attr(data-title);
     position: absolute;
@@ -16,7 +13,31 @@
     font-family: sans-serif;
     white-space: nowrap;
   }
+  /*позиционирование тултипов*/
+  &[data-title-left]:hover::before {
+    left: -80px;
+    bottom: 6px;
+  }
+  &[data-title-top]:hover::before {
+    left: -10px;
+    top: -25px;
+  }
+
+  &[data-title-left-top]:hover::before {
+    left: 0px;
+    bottom: 20px;
+  }
+
+  &[data-title-bottom]:hover::before {
+    left: -6px;
+    top: 45px;
+  }
+  &[data-title-right]:hover::before {
+    left: 49px;
+    bottom: 10px;
+  }
 }
+
 /*
 [data-title] {
   outline: red dotted 1px;*/ /*optional styling

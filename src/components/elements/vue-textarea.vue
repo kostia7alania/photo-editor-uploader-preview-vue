@@ -1,7 +1,20 @@
+<i18n>
+{
+  "en": {
+    "comment-placeholder":"The video list is empty",
+    "Click the button": "Click the button to get the list with uploaded videos"
+  },
+  "ru": {
+    "comment-placeholder":"Список пуст",
+    "Click the button": "Для получения списка видео нажмите на кнопку"
+   }
+}
+</i18n>
+
 <template>
     <textarea
         :class="cls"
-        placeholder="This is a photo comments box"
+        :placeholder="$t('comment-placeholder')"
         rows="20"
         name="comment[text]"
         id="comment_text"

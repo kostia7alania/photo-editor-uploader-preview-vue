@@ -2,17 +2,17 @@
           <div class='cont'>
             <div class="cont-row">
               <div> &nbsp; </div>
-              <div>Original</div>
-              <div>New</div>
+              <div>{{ $t('photo-info.Original') }}</div>
+              <div>{{ $t('photo-info.New') }} </div>
             </div>
             <div class="cont-row">
-              <div>Size</div>
-              <div>{{originalSize | size_filter}}</div>
-              <div v-if="getSizeFromBase64">{{getSizeFromBase64 | size_filter}}</div>
+              <div>{{ $t('photo-info.Size') }}</div>
+              <div>{{size_filter_m(originalSize)}}</div>
+              <div v-if="getSizeFromBase64">{{size_filter_m(getSizeFromBase64)}}</div>
               <div v-else>...</div>
             </div>
             <div class="cont-row" v-if="0">
-              <div>Resolution</div>
+              <div>{{ $t('photo-info.Resolution') }}</div>
               <div>{{originalImageData.naturalWidth}} x {{originalImageData.naturalHeight}}</div>
               <div>{{parseInt(w)}} x {{height_computed}}</div>
             </div>
@@ -45,13 +45,12 @@ export default {
       return parseInt(this.w * this.coef);
     }
   },
-  filters: {
-    size_filter(e) {
-      if (!e) return " ";
-      //console.log("size", e);
+  methods: {
+    size_filter_m(e) {
+      if (!e) return "";
       return e / 1024 / 1024 > 1
-        ? (e / 1024 / 1024).toFixed(0) + " MB"
-        : (e / 1024).toFixed(0) + " KB";
+        ? (e / 1024 / 1024).toFixed(0) + " " + this.$t("size.MB")
+        : (e / 1024).toFixed(0) + " " + this.$t("size.KB");
     }
   }
 };

@@ -1,15 +1,39 @@
 {
   "name": "insp_pics_preview--webpack",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "version": "1.0.12",
+  "description": "Photo uploader with preview and editor",
+  "author": "kostia7alania",
   "scripts": {
-    "clean": "rimraf dist",
     "serve": "cross-env NODE_ENV=development webpack-dev-server --mode development --host 192.168.201.118 --hot --config webpack.dev.js",
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.prod.js"
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.prod.js",
+    "clean": "rimraf dist",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
-  "author": "",
-  "license": "ISC",
+  "main": "main.js",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.5.1",
+    "axios": "^0.19.0",
+    "compass": "^0.1.1",
+    "compass-mixins": "^0.12.10",
+    "core-js": "^2.6.5",
+    "cropperjs": "^1.5.3",
+    "exif-js": "^2.3.0",
+    "fast-async": "^6.3.8",
+    "html-loader": "^0.5.5",
+    "object-hash": "^1.3.1",
+    "postcss-import": "^12.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "pug-html-loader": "^1.1.5",
+    "pug-plain-loader": "^1.0.0",
+    "raw-loader": "^3.1.0",
+    "v-viewer": "^1.4.2",
+    "vue-i18n": "^8.14.1",
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/plugin-external-helpers": "^7.0.0",
@@ -46,6 +70,7 @@
     "terser-webpack-plugin": "^1.3.0",
     "uglifyjs-webpack-plugin": "^2.1.3",
     "vue": "^2.5.17",
+    "vue-cli-plugin-i18n": "^0.6.0",
     "vue-loader": "^15.4.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.17",
@@ -53,32 +78,10 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
   },
-  "dependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/runtime": "^7.5.1",
-    "axios": "^0.19.0",
-    "compass": "^0.1.1",
-    "compass-mixins": "^0.12.10",
-    "core-js": "^2.6.5",
-    "cropperjs": "^1.5.3",
-    "exif-js": "^2.3.0",
-    "fast-async": "^6.3.8",
-    "html-loader": "^0.5.5",
-    "object-hash": "^1.3.1",
-    "postcss-import": "^12.0.1",
-    "postcss-preset-env": "^6.7.0",
-    "pug-html-loader": "^1.1.5",
-    "pug-plain-loader": "^1.0.0",
-    "raw-loader": "^3.1.0",
-    "v-viewer": "^1.4.2",
-    "vuex": "^3.0.1",
-    "vuex-persistedstate": "^2.5.4"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "license": "ISC"
 }

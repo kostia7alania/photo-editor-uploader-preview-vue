@@ -2,17 +2,21 @@
   <div>
 
     <div class="images-rows--description">
-      <b>Date of inspection:</b> {{DateOfInspect}}<br>
-      <b>Nature: </b>{{nature}}<br>
-      <b>Remark: </b>{{remark}}<br> <!-- elem.Remark <- deprecated!!-->
-      <b>Count of photos in the deficiency:</b> {{photosCount}}<br>
-      <div class="text-gray" v-if="photosCount>0">Click on the photo to enlarge</div>
+      <b>{{ $t('images-rows.Date-of-inspection') }}:</b> {{DateOfInspect}}<br>
+      <b>{{ $t('images-rows.Nature') }}: </b>{{nature}}<br>
+      <b>{{ $t('images-rows.Remark') }}: </b>{{remark}}<br> <!-- elem.Remark <- deprecated!!-->
+      <b>{{ $t('images-rows.Count-of-photos') }}: </b>
+        {{photosCount}}
+      <br>
+      <div class="text-gray" v-if="photosCount>0">
+        {{ $t('images-rows.click-to-enlarge') }}
+        </div>
     </div>
 
     <app-images-preview/>
 
     <div v-if="photosCount===0" class="text-center">
-        <h1 style="color:red"> No photos found...</h1>
+        <h1 style="color:red"> {{ $t('no-photos') }} </h1>
     </div>
   </div>
 </template>

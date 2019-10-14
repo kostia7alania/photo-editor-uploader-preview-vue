@@ -88,28 +88,47 @@ export default {
         // Сказали УБРАТЬ даты из подписи фоток
         //новая версия фоток, где есть ето поле в БД;
         if (this.img.DatePhotoFromBrowserYes == 1) {
-          caption = `<span title='Date photo when it was loaded'>, Photo date: ${DatePhoto}</span>`;
-          titleDate = ". Date photo when it was loaded: " + DatePhoto;
-        } else if (this.img.DatePhotoFromBrowserYes == 0) {
-          caption = `<span title='Date photo'>, Photo date: ${DatePhoto}</span>`;
-          titleDate = ". Date photo: " + DatePhoto;
+          caption = `<span title='${this.$t(
+            "images-preview-open.when-it-was-loaded"
+          )}'>, ${this.$t("Photo-date")}: ${DatePhoto}</span>`;
+          titleDate = `. ${this.$t("when-it-was-loaded")}: ` + DatePhoto;
+        } else if (this.img.DatePhotoFromBrowserYes == "0") {
+          caption = `<span title='${this.$t(
+            "images-preview-open.Photo-date"
+          )}'>, ${this.$t(
+            "images-preview-open.Photo-date"
+          )}: ${DatePhoto}</span>`;
+          titleDate =
+            ". ${this.$t('images-preview-open.Photo-date')}: " + DatePhoto;
         }
         if (DatePhoto == "Invalid Date") {
-          caption = `<span title='Unavailable'>, Photo date: N/A </span>`;
-          titleDate = ". Photo date: N/A";
+          caption = `<span title='N/A'>, ${this.$t(
+            "images-preview-open.Photo-date"
+          )}: N/A </span>`;
+          titleDate = `. ${this.$t("images-preview-open.Photo-date")}: N/A`;
         }
       }
       const Edited = ""; //(this.img.Edited == "1" && "<span title='This image was edited by user in the our editor'>[EDITED]</span><br>") || //пока вырубаем оповещение о том,что фотка была отредактирована! || "";
       const editedTitle =
-        (this.img.Edited == "1" && ". The photo was edited by user.") || "";
+        (this.img.Edited == "1" &&
+          `. ${this.$t("images-preview-open.photo-was-edited")}.`) ||
+        "";
       const c = this.img.Comments;
       const com = c && "<span class='preview-user-comment'>" + c + "</span>";
-      const dOfInsp = `<span title='Date of inspection'>${DateOfInspect}</span>`;
-      const ret = ` ${
-        (Edited && 0) || "" /*пока вырубили показ отредактированности*/
-      }
-                    ${(caption && 0) || ""}
-                  <br><b title='Date of inspection: ${DateOfInspect}${titleDate}${editedTitle}'>Photo comments:</b>: ${com} `;
+      const dOfInsp = `<span title='${this.$t(
+        "images-preview-open.Date-of-inspection"
+      )}'>${DateOfInspect}</span>`;
+      //(Edited && 0) || "" /*пока вырубили показ отредактированности*/
+
+      const ret = `${(caption && 0) || ""}
+                  <br><b title='${this.$t(
+                    "images-preview-open.Date-of-inspection"
+                  )}: ${DateOfInspect}${titleDate}${editedTitle}'>
+                  ${
+                    com
+                      ? `${this.$t("images-preview-open.Photo-comments")}:`
+                      : ""
+                  }</b> ${com} `;
       return ret;
     }
     /* imgAltCompHTML() {

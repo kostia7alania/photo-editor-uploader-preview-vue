@@ -1,7 +1,7 @@
 <template>
   <div class="file-container" :class="{'file-container-highlighted': isAlreadyUploaded}">
       <div v-if="isAlreadyUploaded">
-        <p class="already-uploaded-text">This image is already uploaded!</p>
+        <p class="already-uploaded-text">{{ $t('already-uploaded') }}</p>
       </div>
     <div class="files-row">
         <div class="m_p-5 text-left upload-left-side">
@@ -40,8 +40,8 @@
     </div>
     <div>
       <progressVue :percentage="PERCENTAGE" v-if="loading"/>
-      <p class="text-red" v-if="ERROR_maxSize"><b>ERROR:</b> Exceeded the maximum file size of {{maxFileSize}} MB</p>
-      <p class="text-red" v-if="ERROR"><b>ERROR:</b> {{ERROR}} </p>
+      <p class="text-red" v-if="ERROR_maxSize"><b> {{ $t('upload-item.ERROR') }}:</b> {{ $t('upload-item.exceeded-max-file-size', [maxFileSize]) }} </p>
+      <p class="text-red" v-if="ERROR"><b>{{ $t('upload-item.ERROR') }}:</b> {{ERROR}} </p>
     </div>
   <app-photo-editor v-if="editor" :alt="img_prev_alt" :editor="editor" :upd="upd" @save="saveEditor" @cancel="cancelEditor"/>
 

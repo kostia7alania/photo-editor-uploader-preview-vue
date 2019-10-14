@@ -1,4 +1,5 @@
 import functions from './functions'
+
 window.devMode = process.env.NODE_ENV == 'development'
 
 
@@ -14,7 +15,7 @@ window.showPicturesModal = function ({
     CAN_UPLOAD = false,
     upload_mode = false,
     selector = '#photos_modal',
-    title = 'Photo manager',
+    title = 'Deficiency Image Data',
     target = event.target
 }) {
     const args = arguments[0];
@@ -73,6 +74,14 @@ window.showPicturesModal = function ({
             /* webpackPreload: true */
             './store').then(m => m.default)
 
+        const createVueI18n = await import(
+            /*webpackChunkName: "createVueI18n"*/
+            /* webpackMode: "lazy" */
+            /* webpackPrefetch: true */
+            /* webpackPreload: true */
+            './locales').then(m => m.default)
+
+
         const App = await import(
             /*webpackChunkName: "app_vue"*/
             /* webpackMode: "lazy" */
@@ -87,8 +96,8 @@ window.showPicturesModal = function ({
         window.VUE_PICTURE = new Vue({
             el: '#vue_insert',
             render: h => h(App, { props: { a: 1 } }),
-            store: createStore()
-
+            store: createStore(),
+            i18n: createVueI18n()
         });
         const props_append = { def_uid, insp_uid, deficiencies, ...args }
         const keys = Object.keys(props_append);

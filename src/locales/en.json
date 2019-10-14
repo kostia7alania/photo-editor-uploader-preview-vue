@@ -1,0 +1,86 @@
+{
+  "comment-placeholder": "This is a photo comments box",
+  "need-authorization": "Need authorization",
+  "nav-btns": {
+    "Previous": "Previous",
+    "Show-pictures": "Show pictures",
+    "Upload-pictures": "Upload pictures",
+    "Next": "Next"
+  },
+  "Choose-images": "Choose images",
+  "release-mouse": "Release the mouse to add files",
+  "upload-item-buttons": {
+    "Upload": "Upload",
+    "Cancel": "Cancel",
+    "Delete": "Delete",
+    "Editor": "Editor",
+    "Revert": "Revert"
+  },
+  "upload-item-info": {
+    "Name": "Name",
+    "Date": "Date",
+    "Size": "Size",
+    "New-size": "New size",
+    "Type": "Type",
+    "Before-editing": "Before editing",
+    "Data-modified": "Data modified",
+    "EXIF-DateTime": "EXIF DateTime",
+    "GPS-Date-Stamp": "GPS Date Stamp",
+    "Photo-comments": "Photo comments",
+    "CHANGED": "[CHANGED]"
+  },
+  "size": {
+    "B": "B",
+    "KB": "KB",
+    "MB": "MB",
+    "GB": "GB"
+  },
+  "upload-item": {
+    "exceeded-max-file-size": "Exceeded the maximum file size of {0} MB",
+    "already-uploaded": "This image is already uploaded!",
+    "ERROR": "ERROR"
+  },
+  "upload-tips": {
+    "You-can-choose": "You can choose and upload multiple images at once",
+    "Recommended-file-types": "Recommended file types",
+    "Recommended-file-size": "Max recommended file size",
+    "file-size": "5 MB",
+    "file-types": "jpeg (jpg), png, gif",
+    "Resolution": "Resolution",
+    "Resolution_val": "within 4k",
+    "Click-choose-or-drag": "Click 'choose' or drag files to this page to add files to the preview panel",
+    "Close-tip": "Close tip",
+    "Show-tip": "Show tip"
+  },
+  "photo-info": {
+    "Original": "Original",
+    "New": "New",
+    "Size": "Size",
+    "Resolution": "Resolution"
+  },
+  "app-photo-editor": {
+    "Crop-and-save": "Crop and save",
+    "Cancel": "Cancel",
+    "Save": "Save"
+  },
+  "images-preview-open": {
+    "Date-of-inspection": "Date of inspection",
+    "Photo-date": "Photo date",
+    "when-it-was-loaded": "Date photo when it was loaded",
+    "photo-was-edited": "The photo was edited by user",
+    "Photo-comments": "Photo comments"
+  },
+  "images-rows": {
+    "Date-of-inspection": "Date of inspection",
+    "Nature": "Nature",
+    "Remark": "Remark",
+    "Count-of-photos": "Count of photos in the deficiency",
+    "click-to-enlarge": "Click on the photo to enlarge",
+    "no-photos": "No photos found"
+  },
+  "images-preview": {
+    "Photo-date": "Photo date",
+    "Photo-was-taken": "Photo was taken",
+    "Photo-comments": "Photo comments"
+  }
+}

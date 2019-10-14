@@ -1,6 +1,6 @@
 <template>
       <div v-show="dragOver" class="drag-overlay">
-        Release the mouse to add files.
+        {{ $t('release-mouse') }}
       </div>
 </template>
 

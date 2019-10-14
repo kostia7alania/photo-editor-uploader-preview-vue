@@ -1,11 +1,11 @@
 <template>
   <div class="upload-item-info">
-    <p><b>Name:</b> {{upd.file.name}}</p>
-    <p><b>Type:</b> {{upd.file.type}}</p>
-    <p data-title-left-top :data-title="exif_comp"><b>Date:</b> {{fileDate}}</p>
-    <p v-if="!upd.base64" :class="ERROR_maxSize&&'text-red'"><b>Size:</b>  {{upd.file.size | size_filter}}</p>
-    <p v-else data-title-left-top :data-title="'Before editing: '+ size_filter_m(upd.file.size)" ><b>New size:</b>         {{getSizeFromBase64 | size_filter}}</p>
-    <p><b>Photo comments:</b></p>
+    <p><b>{{ $t('upload-item-info.Name') }}:</b> {{upd.file.name}}</p>
+    <p><b>{{ $t('upload-item-info.Type') }}:</b> {{upd.file.type}}</p>
+    <p data-title-left-top :data-title="exif_comp"><b>{{ $t('upload-item-info.Date') }}:</b> {{fileDate}}</p>
+    <p v-if="!upd.base64" :class="ERROR_maxSize&&'text-red'"><b>{{ $t('upload-item-info.Size') }}:</b>  {{size_filter_m(upd.file.size)}}</p>
+    <p v-else data-title-left-top :data-title=" $t('upload-item-info.Before-editing')+': '+ size_filter_m(upd.file.size)" ><b>{{ $t('upload-item-info.New-size') }}:</b>         {{size_filter_m(getSizeFromBase64) }}</p>
+    <p><b>{{ $t('upload-item-info.Photo-comments') }}:</b></p>
   </div>
 </template>
 
@@ -42,8 +42,7 @@ export default {
   computed: {
     exif_comp() {
       const exif = this.upd.EXIF;
-      if (!exif) return "Data modified";
-
+      if (!exif) return this.$t("upload-item-info.Data-modified");
       const parseDate = dt =>
         new Date(dt.replace(/:/g, ".")).toLocaleDateString("ru");
 
@@ -56,9 +55,14 @@ export default {
       const GPSDateStamp =
         (exif.GPSDateStamp && parseDate(exif.GPSDateStamp)) || "";
       let out = "";
-      out += DateTime ? "EXIF DateTime: " + DateTime : "";
+      out += DateTime
+        ? `${this.$t("upload-item-info.EXIF-DateTime")} : ${DateTime}`
+        : "";
       out += out ? ". " : "";
-      out += GPSDateStamp ? "GPS Date Stamp: " + GPSDateStamp : "";
+      out += GPSDateStamp
+        ? `${this.$t("upload-item-info.GPS-Date-Stamp")} : ${GPSDateStamp}`
+        : "";
+
       return out;
     },
     fileDate() {
@@ -92,9 +96,14 @@ export default {
     },
     img_prev_alt() {
       const comment = this.upd.comment
-        ? `. Photo comments: "${this.upd.comment}"`
+        ? `. ${this.$t("upload-item-info.Photo-comments")} : "${
+            this.upd.comment
+          }"`
         : "";
-      const changed = this.upd.base64 ? " [CHANGED]" : "";
+      const changed = this.upd.base64
+        ? ` ${this.$t("upload-item-info.CHANGED")}`
+        : "";
+
       return this.upd.file.name + comment + changed;
     }
   },
@@ -103,16 +112,10 @@ export default {
       return e.toLocaleString("ru-RU");
     },
     size_filter_m(e) {
+      if (!e) return "";
       return e / 1024 / 1024 > 1
-        ? (e / 1024 / 1024).toFixed(0) + " MB"
-        : (e / 1024).toFixed(0) + " KB";
-    }
-  },
-  filters: {
-    size_filter(e) {
-      return e / 1024 / 1024 > 1
-        ? (e / 1024 / 1024).toFixed(0) + " MB"
-        : (e / 1024).toFixed(0) + " KB";
+        ? (e / 1024 / 1024).toFixed(0) + " " + this.$t("size.MB")
+        : (e / 1024).toFixed(0) + " " + this.$t("size.KB");
     }
   }
 };

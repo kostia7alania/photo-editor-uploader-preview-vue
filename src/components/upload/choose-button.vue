@@ -1,7 +1,9 @@
 <template>
       <div class="choose-btn">
         <input id="pic-upd" @change="changeHandler" multiple accept="image/*" type="file">
-        <label for="pic-upd" class="btn draw-border">Choose images</label>
+        <label for="pic-upd" class="btn draw-border">
+          {{ $t('Choose-images') }}
+          </label>
       </div>
 </template>
 
