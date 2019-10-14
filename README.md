@@ -1,12 +1,13 @@
 # Picture Uploader, Preview, Editor, Cropper
 
 ## Using VUE JS, JQuery, WebPack 4
-
+ <p align="center">
 <img src="./demo/preview-1.gif">
 <img src="./demo/preview-2.gif">
 <img src="./demo/preview-3.gif">
 <img src="./demo/preview-4.gif">
-
+ </p>
+ 
 ### TAGS
 
 生命 周期, vue js コンポーネント,
