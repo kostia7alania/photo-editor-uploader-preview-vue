@@ -1,19 +1,19 @@
 <template>
     <div v-viewer="{ url: 'data-original' }" class="v-viewer-modal v-viewer-modal-custom" ref="viewer">
 
-        <div v-for="img in INSP_PHOTOS" class="v-viewer-modal-row" :key="img.FileName">
+        <div v-for="(img,i) in INSP_PHOTOS" class="v-viewer-modal-row" :key="img.FileName">
 
             <images-preview-open :img="img"/>
 
             <div class="v-viewer-modal-desc">
               <div class="desc--date">
-                <p
-                  data-title-right
-                :data-title="$t('images-preview.Photo-was-taken')+': ' + photoTaken(img)"><b>
+                <span data-title-right
+                  :data-title="$t('images-preview.Photo-was-taken')+': ' + photoTaken(img)"><b>
                   {{ $t('images-preview.Photo-date') }}:
-                  </b> <span> {{datePhoto(img) | toRuDate}}</span></p>
-              </div>
-                <p v-if="img.Comments"><b>{{ $t('images-preview.Photo-comments') }}:</b> {{img.Comments}}</p>
+                  </b><span>{{datePhoto(img) | toRuDate}}</span></span>
+              </div> 
+                <div><b>{{ $t('images-preview.Photo-index') }}:</b> {{i+1}}</div>
+                <div v-if="img.Comments"><b>{{ $t('images-preview.Photo-comments') }}:</b> {{img.Comments}}</div>
             </div>
 
         </div>
@@ -62,13 +62,9 @@ export default {
   display: flex;
 }
 .v-viewer-modal-desc {
-  word-break: break-word;
-  .desc--date {
-    p {
-      margin: 0 0 2px 0;
-      display: flex;
-      justify-content: space-between;
-    }
-  }
+  word-break: break-word; 
+    span {
+      margin: 0 0 2px 0; 
+    } 
 }
 </style>

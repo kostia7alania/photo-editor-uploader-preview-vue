@@ -1,7 +1,7 @@
 <template>
   <div class="file-container" :class="{'file-container-highlighted': isAlreadyUploaded}">
       <div v-if="isAlreadyUploaded">
-        <p class="already-uploaded-text">{{ $t('already-uploaded') }}</p>
+        <p class="already-uploaded-text">{{ $t('upload-item.already-uploaded') }}</p>
       </div>
     <div class="files-row">
         <div class="m_p-5 text-left upload-left-side">

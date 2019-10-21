@@ -56,11 +56,11 @@ export default {
         (exif.GPSDateStamp && parseDate(exif.GPSDateStamp)) || "";
       let out = "";
       out += DateTime
-        ? `${this.$t("upload-item-info.EXIF-DateTime")} : ${DateTime}`
+        ? `${this.$t("upload-item-info.EXIF-DateTime")}: ${DateTime}`
         : "";
       out += out ? ". " : "";
       out += GPSDateStamp
-        ? `${this.$t("upload-item-info.GPS-Date-Stamp")} : ${GPSDateStamp}`
+        ? `${this.$t("upload-item-info.GPS-Date-Stamp")}: ${GPSDateStamp}`
         : "";
 
       return out;

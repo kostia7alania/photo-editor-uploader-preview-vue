@@ -81,6 +81,7 @@
   "images-preview": {
     "Photo-date": "Дата фото",
     "Photo-was-taken": "Сфотографировано",
+    "Photo-index":"Индекс фото",
     "Photo-comments": "Комментарии к фото"
   }
 }

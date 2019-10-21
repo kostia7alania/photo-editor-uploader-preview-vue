@@ -88,23 +88,16 @@ export default {
         // Сказали УБРАТЬ даты из подписи фоток
         //новая версия фоток, где есть ето поле в БД;
         if (this.img.DatePhotoFromBrowserYes == 1) {
-          caption = `<span title='${this.$t(
-            "images-preview-open.when-it-was-loaded"
-          )}'>, ${this.$t("Photo-date")}: ${DatePhoto}</span>`;
-          titleDate = `. ${this.$t("when-it-was-loaded")}: ` + DatePhoto;
+          caption = `<span title='${this.$t("images-preview-open.when-it-was-loaded")}'>, ${this.$t("images-preview-open.Photo-date")}: s ${DatePhoto}</span>`;
+          titleDate = `. ${this.$t("images-preview-open.when-it-was-loaded")}: ` + DatePhoto;
         } else if (this.img.DatePhotoFromBrowserYes == "0") {
-          caption = `<span title='${this.$t(
-            "images-preview-open.Photo-date"
-          )}'>, ${this.$t(
-            "images-preview-open.Photo-date"
-          )}: ${DatePhoto}</span>`;
+          caption = `<span title='${this.$t("images-preview-open.Photo-date")}'>, 
+          ${this.$t("images-preview-open.Photo-date")}: ${DatePhoto}</span>`;
           titleDate =
             ". ${this.$t('images-preview-open.Photo-date')}: " + DatePhoto;
         }
         if (DatePhoto == "Invalid Date") {
-          caption = `<span title='N/A'>, ${this.$t(
-            "images-preview-open.Photo-date"
-          )}: N/A </span>`;
+          caption = `<span title='N/A'>, ${this.$t("images-preview-open.Photo-date")}: N/A </span>`;
           titleDate = `. ${this.$t("images-preview-open.Photo-date")}: N/A`;
         }
       }
@@ -115,19 +108,12 @@ export default {
         "";
       const c = this.img.Comments;
       const com = c && "<span class='preview-user-comment'>" + c + "</span>";
-      const dOfInsp = `<span title='${this.$t(
-        "images-preview-open.Date-of-inspection"
-      )}'>${DateOfInspect}</span>`;
+      const dtInsp = this.$t( "images-preview-open.Date-of-inspection")
+      const dOfInsp = `<span title='${dtInsp}'>${DateOfInspect}</span>`;
       //(Edited && 0) || "" /*пока вырубили показ отредактированности*/
-
       const ret = `${(caption && 0) || ""}
-                  <br><b title='${this.$t(
-                    "images-preview-open.Date-of-inspection"
-                  )}: ${DateOfInspect}${titleDate}${editedTitle}'>
-                  ${
-                    com
-                      ? `${this.$t("images-preview-open.Photo-comments")}:`
-                      : ""
+                  <br><b title='${dtInsp}: ${DateOfInspect}${titleDate}${editedTitle}'>
+                  ${com ? `${this.$t("images-preview-open.Photo-comments")}:` : ""
                   }</b> ${com} `;
       return ret;
     }

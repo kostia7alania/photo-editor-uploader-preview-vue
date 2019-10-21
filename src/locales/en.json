@@ -81,6 +81,7 @@
   "images-preview": {
     "Photo-date": "Photo date",
     "Photo-was-taken": "Photo was taken",
+    "Photo-index":"Photo index",
     "Photo-comments": "Photo comments"
   }
 }
