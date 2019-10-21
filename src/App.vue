@@ -71,8 +71,8 @@ export default window.photos_modal_app = {
       window.VUE_PICTURE.$destroy();
       window.VUE_PICTURE = undefined;
     });
-  },
-  computed: {
+  }, 
+  computed: { 
     upload_mode() {
       return this.$store.state.upload_mode;
     },

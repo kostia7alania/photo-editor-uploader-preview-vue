@@ -9,8 +9,7 @@ const state = {
   insp_uid: null,
   def_uid: null,
   upload_mode: false,
-  CAN_UPLOAD: false,
-
+  CAN_UPLOAD: false, 
   SHOW_UPLOAD_TIP: true,
 
   deficiencies: [],

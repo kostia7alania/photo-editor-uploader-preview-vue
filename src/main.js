@@ -97,7 +97,11 @@ window.showPicturesModal = function ({
             el: '#vue_insert',
             render: h => h(App, { props: { a: 1 } }),
             store: createStore(),
-            i18n: createVueI18n()
+            i18n: createVueI18n(),
+            mounted() {
+                if ("locale" in args && ["en", "ru"].includes(args.locale))
+                  this.$i18n.locale = args.locale;
+            }
         });
         const props_append = { def_uid, insp_uid, deficiencies, ...args }
         const keys = Object.keys(props_append);
