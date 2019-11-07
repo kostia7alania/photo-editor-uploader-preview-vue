@@ -14,6 +14,10 @@
     white-space: nowrap;
   }
   /*позиционирование тултипов*/
+  &[data-title-right-top]:hover::before {
+    left: 10px;
+    bottom: -18px;
+  }
   &[data-title-left]:hover::before {
     left: -80px;
     bottom: 6px;

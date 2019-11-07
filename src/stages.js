@@ -9,7 +9,7 @@ export const loading = {
 };
 export const error = {
   template: `<div style="text-align:center">
-    <span>. . . ERROR . . .</span>
+    <span>. . . {{$t('ERROR')}} . . .</span>
 </div>
 ` };
 export const con = { loading, error, delay: 20, timeout: 25000 };

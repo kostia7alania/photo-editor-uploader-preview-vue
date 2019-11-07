@@ -1,4 +1,5 @@
 {
+  "ERROR":"ERROR",
   "comment-placeholder": "This is a photo comments box",
   "need-authorization": "Need authorization",
   "nav-btns": {
@@ -68,7 +69,8 @@
     "Photo-date": "Photo date",
     "when-it-was-loaded": "Date photo when it was loaded",
     "photo-was-edited": "The photo was edited by user",
-    "Photo-comments": "Photo comments"
+    "Photo-comments": "Photo comments",
+    "click-to-copy":"Click to copy direct photo address"
   },
   "images-rows": {
     "Date-of-inspection": "Date of inspection",

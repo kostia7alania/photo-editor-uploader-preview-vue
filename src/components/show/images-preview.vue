@@ -2,8 +2,9 @@
     <div v-viewer="{ url: 'data-original' }" class="v-viewer-modal v-viewer-modal-custom" ref="viewer">
 
         <div v-for="(img,i) in INSP_PHOTOS" class="v-viewer-modal-row" :key="img.FileName">
+            
 
-            <images-preview-open :img="img"/>
+            <images-preview-open :img="img" :i="i"/>
 
             <div class="v-viewer-modal-desc">
               <div class="desc--date">
@@ -12,8 +13,10 @@
                   {{ $t('images-preview.Photo-date') }}:
                   </b><span>{{datePhoto(img) | toRuDate}}</span></span>
               </div> 
-                <div><b>{{ $t('images-preview.Photo-index') }}:</b> {{i+1}}</div>
-                <div v-if="img.Comments"><b>{{ $t('images-preview.Photo-comments') }}:</b> {{img.Comments}}</div>
+                <!--<div><b>{{ $t('images-preview.Photo-index') }}:</b> {{i+1}}</div>-->
+                <div v-if="typeof img.Comments == 'string' && img.Comments.trim().length">
+                  <b>{{ $t('images-preview.Photo-comments') }}:</b> {{img.Comments}}
+                </div>
             </div>
 
         </div>
