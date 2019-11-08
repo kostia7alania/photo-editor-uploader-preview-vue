@@ -4,14 +4,14 @@ window.devMode = process.env.NODE_ENV == 'development'
 
 
 
-import( /* webpackChunkName: "main.scss" */
+import ( /* webpackChunkName: "main.scss" */
     /* webpackMode: "lazy" */
     /* webpackPrefetch: true */
     /* webpackPreload: true */
     "./styles/main.scss")
 
 
-window.showPicturesModal = function ({
+window.showPicturesModal = function({
     CAN_UPLOAD = false,
     upload_mode = false,
     selector = '#photos_modal',
@@ -22,8 +22,8 @@ window.showPicturesModal = function ({
     const def_uid = target.attributes.def.value
     const insp_uid = target.attributes.insp.value
     const deficiencies = functions.getDataFromTable({ target })
-    //const devMode = process.env.NODE_ENV == 'development'
-    //if (devMode) let elems = [{ "Code": "11129", "Nature": "Operational readiness of lifesaving appliances", "Remark": "Freefall life boat release system defective" }, { "Code": "10114", "Nature": "Voyage data recorder (VDR)/Simplified Voyage data recorder(S-VDR)", "Remark": "Hydrostatic release unit expired at VDR float-free capsule since December 2018" }, { "Code": "04110", "Nature": "Abandon ship drills", "Remark": "No record to document that freefall life boat has been manoeuvred in water in past 3 months" }]
+        //const devMode = process.env.NODE_ENV == 'development'
+        //if (devMode) let elems = [{ "Code": "11129", "Nature": "Operational readiness of lifesaving appliances", "Remark": "Freefall life boat release system defective" }, { "Code": "10114", "Nature": "Voyage data recorder (VDR)/Simplified Voyage data recorder(S-VDR)", "Remark": "Hydrostatic release unit expired at VDR float-free capsule since December 2018" }, { "Code": "04110", "Nature": "Abandon ship drills", "Remark": "No record to document that freefall life boat has been manoeuvred in water in past 3 months" }]
 
     functions.reAppendToBody({ selector, title })
     let w = (window.innerWidth / 1.2)
@@ -33,7 +33,7 @@ window.showPicturesModal = function ({
         title,
         closeOnEscape: false,
         modal: true,
-        height: window.screen.availTop || 400,
+        height: 400, // window.screen.availTop / 2 ||
         width: w || 600,
         minWidth: 577,
         maxWidth: 1777,
@@ -41,7 +41,7 @@ window.showPicturesModal = function ({
         minHeight: 200,
 
         maxHeigh: window.screen.height / 2,
-        create: function (event) {
+        create: function(event) {
             //$(event.target).parent().css('position', 'fixed');
         },
         buttons: { /*  Ok: function() { $( this ).dialog( "destroy" ); }*/ },
@@ -49,32 +49,35 @@ window.showPicturesModal = function ({
         // open: () => $(selector).dialog({ position: ['center', '10'] })
     });
 
-    (async function () {
+    (async function() {
         if (!('Vue' in window))
             window.Vue =
-                await import( //ОСТОРОЖНО! Тут теряется event и this
-                    /* webpackChunkName: "VUE" */
-                    /* webpackMode: "lazy" */
-                    /* webpackPrefetch: true */
-                    /* webpackPreload: true */
-                    '../node_modules/vue/dist/vue.min.js')
-                    .then(m => m.default)
+            await
+        import ( //ОСТОРОЖНО! Тут теряется event и this
+            /* webpackChunkName: "VUE" */
+            /* webpackMode: "lazy" */
+            /* webpackPrefetch: true */
+            /* webpackPreload: true */
+            '../node_modules/vue/dist/vue.min.js')
+        .then(m => m.default)
 
-        import(
+        import (
             /* webpackChunkName: "viewer_init" */
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
             /* webpackPreload: true */
             './v-viewer-init').then(m => m.default)
 
-        const createStore = await import(
+        const createStore = await
+        import (
             /*webpackChunkName: "store"*/
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
             /* webpackPreload: true */
             './store').then(m => m.default)
 
-        const createVueI18n = await import(
+        const createVueI18n = await
+        import (
             /*webpackChunkName: "createVueI18n"*/
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
@@ -82,7 +85,8 @@ window.showPicturesModal = function ({
             './locales').then(m => m.default)
 
 
-        const App = await import(
+        const App = await
+        import (
             /*webpackChunkName: "app_vue"*/
             /* webpackMode: "lazy" */
             /* webpackPrefetch: true */
@@ -100,7 +104,7 @@ window.showPicturesModal = function ({
             i18n: createVueI18n(),
             mounted() {
                 if ("locale" in args && ["en", "ru"].includes(args.locale))
-                  this.$i18n.locale = args.locale;
+                    this.$i18n.locale = args.locale;
             }
         });
         const props_append = { def_uid, insp_uid, deficiencies, ...args }
