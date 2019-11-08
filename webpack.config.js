@@ -22,7 +22,7 @@ const mod = {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js', //chunks USAGE => https://webpack.js.org/guides/code-splitting/
     path: path.resolve(__dirname, './dist'),
-    publicPath: devMode ? "/" : "./api/picture-manager/frontend/dist/",
+    publicPath: devMode ? "/" : "./api/picture-manager/dist/",
     //publicPath: devMode ? '/dist' : './js/picture-manager/dist/',
     filename: 'build.js',
   },
