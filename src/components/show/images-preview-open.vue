@@ -6,9 +6,9 @@
         :data-original="real_img_src"
         :alt="imgAltCompHTML"
       >
-    --> 
+    -->
     <span
-        @click="copySrc" 
+        @click="copySrc"
         data-title-right-top :data-title="$t('images-preview-open.click-to-copy')"
         class='row-index'>
           {{indexBadge}}
@@ -73,17 +73,16 @@
             :src="prev_img_src"
             :dataOriginal="real_img_src"
             :alt="imgAltComp"
-      />--> 
+      />-->
   </div>
 </template>
 <script>
-
 export default {
   name: "images-preview-open",
-  props: ["img", 'i'],
+  props: ["img", "i"],
   data() {
     return {
-      indexBadge: this.i+1,
+      indexBadge: this.i + 1,
       imgError: false,
       bg:
         "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -93,15 +92,15 @@ export default {
     imgPrev: () => import("../img-prev.vue")
   },
   watch: {
-    indexBadge(neww,old) {
-      if(neww !== old) {
-        setTimeout(()=>this.indexBadge = this.i+1,1000)
+    indexBadge(neww, old) {
+      if (neww !== old) {
+        setTimeout(() => (this.indexBadge = this.i + 1), 1000);
       }
     }
-   },
+  },
   computed: {
     fullImgSrcComp() {
-      return location.href+this.real_img_src
+      return location.href + this.real_img_src;
     },
     url() {
       return this.$store.state.BASE_URL;
@@ -159,10 +158,11 @@ export default {
         } else if (this.img.DatePhotoFromBrowserYes == "0") {
           caption = `<span title='${this.$t(
             "images-preview-open.Photo-date"
-          )}'>, 
+          )}'>,
           ${this.$t("images-preview-open.Photo-date")}: ${DatePhoto}</span>`;
-          titleDate =
-            ". ${this.$t('images-preview-open.Photo-date')}: " + DatePhoto;
+          titleDate = `. ${this.$t(
+            "images-preview-open.Photo-date"
+          )}: ${DatePhoto}`;
         }
         if (DatePhoto == "Invalid Date") {
           caption = `<span title='N/A'>, ${this.$t(
@@ -209,28 +209,26 @@ export default {
     imgErrorHandler() {
       this.imgError = true;
     },
-    copySrc () {
-        if(typeof this.indexBadge !== 'number') return;
-          const toCopy = this.$refs['to-coppy']
-          toCopy.setAttribute('type', 'text')    // 不是 hidden 才能複製
-          toCopy.select() 
-          try {
-             this.indexBadge = document.execCommand('copy') ? '✓' : 'x'
-            
-          } catch (err) {
-            alert('Oops, unable to copy');
-          }
+    copySrc() {
+      if (typeof this.indexBadge !== "number") return;
+      const toCopy = this.$refs["to-coppy"];
+      toCopy.setAttribute("type", "text"); // 不是 hidden 才能複製
+      toCopy.select();
+      try {
+        this.indexBadge = document.execCommand("copy") ? "✓" : "x";
+      } catch (err) {
+        alert("Oops, unable to copy");
+      }
 
-          /* unselect the range */
-          toCopy.setAttribute('type', 'hidden')
-          window.getSelection().removeAllRanges()
-        },
+      /* unselect the range */
+      toCopy.setAttribute("type", "hidden");
+      window.getSelection().removeAllRanges();
+    }
   }
 };
 </script>
 
 <style lang="scss">
-
 .v-viewer-modal-img {
   display: flex;
   align-items: center;
@@ -242,7 +240,7 @@ export default {
     margin: 0px 5px 5px 0;
     background-size: contain;
     /*background-image: url(https://cdn2.iconfinder.com/data/icons/picons-basic-3/57/basic3-010_creative_commons-256.png);*/
-/*AKA PLACeHOLDER->    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='111' height='111'%3E%3Crect x='2' y='2' width='107' height='107' style='fill:%23DEDEDE;stroke:%23555555;stroke-width:2'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' alignment-baseline='middle' font-family='monospace, sans-serif' fill='%23555555'%3E111×111%3C/text%3E%3C/svg%3E");*/
+    /*AKA PLACeHOLDER->    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='111' height='111'%3E%3Crect x='2' y='2' width='107' height='107' style='fill:%23DEDEDE;stroke:%23555555;stroke-width:2'/%3E%3Ctext x='50%25' y='50%25' font-size='18' text-anchor='middle' alignment-baseline='middle' font-family='monospace, sans-serif' fill='%23555555'%3E111×111%3C/text%3E%3C/svg%3E");*/
   }
 
   .row-index {
@@ -256,20 +254,17 @@ export default {
     border-radius: 50%;
     padding: 4px;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
     &:hover {
       transform: scale(1.4);
       background: yellow;
       color: red !important;
     }
     &:active {
-      transform: scale(.8);
+      transform: scale(0.8);
       background: green;
       color: yellow !important;
     }
   }
-
 }
-
-
 </style>
